@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiBox</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #7ea7a6, #d1e0e0);
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo img {
+            width: 110px;
+            margin-right: 3px;
+        }
+
+        .login-btn {
+            padding: 10px 20px;
+            background: #121348;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #0e0f35;
+        }
+
+        .container {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .container h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .container p {
+            font-size: 16px;
+            margin-bottom: 40px;
+            color: #222;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            margin: 15px auto;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            max-width: 600px;
+        }
+
+        .footer {
+            background: #121348;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer h2 {
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox">
+            <span>DigiBox</span>
+        </div>
+        <button class="login-btn" onclick="window.location.href='/login/'">Login</button>
+    </header>
+
+    <div class="container">
+        <h2>Kelola Dataset Anda dengan Lebih Efisien</h2>
+        <p>Aplikasi ini membantu Anda mengelola dataset dengan mudah. Unggah, analisis, dan pantau perubahan dataset dalam satu platform yang intuitif.</p>
+
+        <div class="feature-box">Buat tabel dataset sesuai dengan definisi data di aplikasi Intelligence Creation.</div>
+        <div class="feature-box">Unggah data yang dibutuhkan untuk pemodelan sistem cerdas.</div>
+        <div class="feature-box">Tampilkan statistik deskriptif dan kualitas data.</div>
+        <div class="feature-box">Catat perubahan dataset setelah pemrosesan data.</div>
+        <div class="feature-box">Lacak proyek yang menggunakan dataset ini.</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <h2>DigiBox</h2>
+        <p>About Us</p>
+    </footer>
+</body>
+</html>

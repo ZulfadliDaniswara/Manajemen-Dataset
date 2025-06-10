@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Dataset (Step 2) - DigiBox</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      color: #000;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      height: 70px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .search-profile {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    main.form-container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 30px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #002a5c;
+      margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .dataset-form {
+      text-align: left;
+    }
+
+    .dataset-form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    .dataset-form input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 20px;
+      border: 1px solid #aaa;
+      background-color: #f2f2f2;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .btn-back, .btn-next {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0b0b38;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-back:hover, .btn-next:hover {
+      background-color: #1c1c5c;
+    }
+
+    .footer {
+      background-color: #0b0b38;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .footer-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: #90c3c3;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+    <div class="search-profile">
+      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
+    </div>
+  </header>
+
+  <main class="form-container">
+    <h2 class="form-title">Informasi Lanjutan Dataset</h2>
+    <p class="form-subtitle">Isi informasi tambahan yang dibutuhkan untuk mendeskripsikan dataset Anda secara menyeluruh.</p>
+
+    <form class="dataset-form" method="post">
+      {% csrf_token %}
+
+      <label for="creator">Nama Pembuat Dataset</label>
+      <input type="text" id="creator" name="creator_name" placeholder="Nama Pembuat" required>
+
+      <label for="verifier">Nama Pemverifikasi</label>
+      <input type="text" id="verifier" name="verifier_name" placeholder="Nama Pemverifikasi" required>
+
+      <div class="button-group">
+        <a href="{% url 'create_dataset' %}" class="btn-back">Back</a>
+        <button type="submit" name="next" class="btn-next">Next</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-text">DigiBox</p>
+    <a href="#" class="footer-link">About us</a>
+  </footer>
+
+</body>
+</html>

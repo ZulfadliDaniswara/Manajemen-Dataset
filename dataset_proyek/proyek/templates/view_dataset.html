@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ dataset.title }}</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e1e;
+    }
+
+    /* ==== HEADER ==== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      width: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 2.0rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .search-section input {
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      background: none;
+    }
+
+    .search-icon {
+      width: 16px;
+      margin-left: 8px;
+    }
+
+    .profile-icon {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    /* ==== MAIN ==== */
+    main.container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 30px auto;
+      background: #d7e9ec;
+      border-radius: 20px;
+      padding: 2rem;
+      flex-grow: 1;
+    }
+
+    .dataset-header {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dataset-image {
+      width: 180px;
+      height: auto;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .dataset-info {
+      flex: 1;
+    }
+
+    .dataset-info h2 {
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .dataset-info p {
+      font-size: 0.9rem;
+      color: #333;
+      margin: 0.2rem 0;
+    }
+
+    .buttons {
+      margin-top: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1.4rem;
+      margin-right: 0.6rem;
+      background-color: #1a202c;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .btn:hover {
+      background-color: #2d3748;
+    }
+
+    .section {
+      margin-top: 2rem;
+    }
+
+    .section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section p {
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #b4dcdc;
+      color: #222;
+      padding: 4px 10px;
+      margin: 5px 5px 0 0;
+      border-radius: 15px;
+      font-size: 0.8rem;
+    }
+
+    .activity-charts {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .activity-charts img {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 10px;
+    }
+
+    /* ==== FOOTER ==== */
+    .footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+
+    <div class="header-right">
+      <div class="search-section">
+        <input type="text" placeholder="Search" />
+        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+      </div>
+      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+    <div class="dataset-header">
+      <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-image">
+      <div class="dataset-info">
+        <h2>{{ dataset.title }}</h2>
+        <p>Dibuat pada {{ dataset.created_at|date:"d/m/Y" }}</p>
+        <div class="buttons">
+          <a href="{% url 'download_dataset' dataset.id %}" class="btn">⬇ Download</a>
+          <a href="{% url 'print_dataset_pdf' dataset.id %}" class="btn">🖨 Print Details</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>About dataset:</h3>
+      <p>{{ dataset.description }}</p>
+      <p><strong>📂 Kategori:</strong> {{ dataset.category }}</p>
+      <p><strong>📊 Format:</strong> {{ dataset.file_format }}</p>
+      <p><strong>📁 Jumlah Data:</strong> {{ dataset.num_rows }} baris</p>
+      <p><strong>⚙️ Fitur:</strong> {{ dataset.num_features }}</p>
+      <p><strong>🏷 Filter:</strong> {{ dataset.filters }}</p>
+    </div>
+
+    <div class="section">
+      <h3>Tags:</h3>
+      {% for tag in keywords_list %}
+        <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="section">
+      <h3>Creator:</h3>
+      <p>{{ dataset.creator_name }}</p>
+
+      <h3>Verifier:</h3>
+      <p>{{ dataset.verifier_name }}</p>
+    </div>
+
+    <div class="section">
+      <h3>Activity details:</h3>
+      <div class="activity-charts">
+        <img src="{% static 'images/grafik views.png' %}" alt="Views Chart">
+        <img src="{% static 'images/grafik download.png' %}" alt="Downloads Chart">
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>DigiBox</div>
+    <a href="#">About us</a>
+  </footer>
+
+</body>
+</html>

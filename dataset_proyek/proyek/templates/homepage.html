@@ -1,0 +1,357 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigiBox - Homepage</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 8%;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      height: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 20px;
+      padding: 5px 10px;
+    }
+
+    .search-section input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      width: 16px;
+      height: 16px;
+      margin-left: 5px;
+    }
+
+    .message-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-left: 10px;
+      object-fit: cover;
+      transition: transform 0.2s ease;
+    }
+
+    .message-icon:hover {
+      transform: scale(1.05);
+    }
+
+    .profile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .hero {
+      padding: 60px 8% 40px;
+    }
+
+    .hero h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #004050;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      max-width: 500px;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      background-color: #d5eaea;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 25px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #004050;
+    }
+
+    .cta-button-wrapper {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .dataset-section {
+      padding: 20px 8%;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .section-header h2 {
+      font-size: 18px;
+      color: #002c3e;
+    }
+
+    .section-header a {
+      font-size: 13px;
+      text-decoration: none;
+      color: #002c3e;
+      font-weight: 500;
+    }
+
+    .dataset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 15px;
+    }
+
+    .dataset-grid img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .dataset-grid img:hover {
+      transform: scale(1.03);
+    }
+
+    .footer {
+      background-color: #0b0b38;
+      padding: 25px 8%;
+      text-align: center;
+      color: white;
+    }
+
+    .footer-logo {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .footer-link {
+      color: white;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .popup-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .popup-card {
+      position: relative;
+      background: #f0f0f0;
+      padding: 2rem;
+      border-radius: 25px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .popup-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover;
+    }
+
+    .popup-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .popup-link {
+      display: block;
+      margin: 12px 0;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 500;
+    }
+
+    .popup-close {
+      font-size: 24px;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      color: #555;
+    }
+
+    .popup-hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+
+    <div class="header-right">
+      <div class="search-section">
+        <input type="text" placeholder="Search" />
+        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+      </div>
+
+      <!-- Ikon Pesan -->
+      <a href="{% url 'inbox' %}" title="Pesan Masuk">
+        <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
+      </a>
+
+      <!-- Ikon Profil -->
+      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+    </div>
+  </header>
+
+  <!-- Profile Popup -->
+  <div id="profile-popup" class="popup-container popup-hidden">
+    <div class="popup-card">
+      <div class="popup-close" onclick="toggleProfilePopup()">X</div>
+      <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+      <div class="popup-name">{{ request.user.username }}</div>
+      <a href="{% url 'your_dataset' %}" class="popup-link">📂 Your Dataset</a>
+      <a href="{% url 'logout' %}" class="popup-link">🔓 Logout</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero">
+      <h1>Jelajahi Dunia Data, Tanpa Batas</h1>
+      <p>Temukan dan akses beragam dataset berkualitas tinggi untuk mendukung riset, analisis, dan pengembangan teknologi.</p>
+      <div class="cta-button-wrapper">
+        <button class="cta-button" onclick="window.location.href='/create_dataset/'">Create Dataset</button>
+      </div>
+    </section>
+
+    <section class="dataset-section">
+      <div class="section-header">
+        <h2>All Dataset</h2>
+        <a href="{% url 'all_datasets' %}">View all →</a>
+      </div>
+      <div class="dataset-grid">
+        <img src="{% static 'images/rashford.jpg' %}" alt="dataset">
+        <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
+        <img src="{% static 'images/spiderman.jpg' %}" alt="dataset">
+        <img src="{% static 'images/valverde.jpg' %}" alt="dataset">
+      </div>
+    </section>
+
+    <section class="dataset-section">
+      <div class="section-header">
+        <h2>Last View</h2>
+        <a href="{% url 'lastview_dataset' %}">View all →</a>
+      </div>
+      <div class="dataset-grid">
+        <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
+        <img src="{% static 'images/tifomu.jpg' %}" alt="dataset">
+        <img src="{% static 'images/ultinolan.jpg' %}" alt="dataset">
+        <img src="{% static 'images/lego.jpg' %}" alt="dataset">
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-logo">DigiBox</div>
+    <a href="#" class="footer-link">About us</a>
+  </footer>
+
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+
+    function toggleProfilePopup() {
+      popup.classList.toggle('popup-hidden');
+    }
+
+    document.addEventListener('click', function(event) {
+      if (!popup.classList.contains('popup-hidden') &&
+          !popup.contains(event.target) &&
+          !profileIcon.contains(event.target)) {
+        popup.classList.add('popup-hidden');
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        popup.classList.add('popup-hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>

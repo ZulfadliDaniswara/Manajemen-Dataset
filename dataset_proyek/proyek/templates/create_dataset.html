@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Dataset - DigiBox</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      color: #000;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      height: 70px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .profile-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    main.form-container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 30px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #002a5c;
+      margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .dataset-form {
+      text-align: left;
+    }
+
+    .dataset-form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    .dataset-form input[type="text"],
+    .dataset-form input[type="file"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 20px;
+      border: 1px solid #aaa;
+      background-color: #f2f2f2;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .btn-back, .btn-next {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0b0b38;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-back:hover, .btn-next:hover {
+      background-color: #1c1c5c;
+    }
+
+    .footer {
+      background-color: #0b0b38;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .footer-text {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .footer-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+    <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
+  </header>
+
+  <!-- Main -->
+  <main class="form-container">
+    <h2 class="form-title">Mulai Proyek Anda dengan Dataset Baru</h2>
+    <p class="form-subtitle">Buat dataset baru untuk dianalisis, dibagikan, atau digunakan dalam model Anda dengan mudah dan efisien sesuai dengan kebutuhan Anda.</p>
+
+    <form class="dataset-form" method="post" action="{% url 'create_dataset' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="name">1. Nama Dataset</label>
+      <input type="text" id="name" name="name" placeholder="Nama Dataset" required>
+
+      <label for="description">2. Deskripsi Dataset</label>
+      <input type="text" id="description" name="description" placeholder="Deskripsikan dataset Anda" required>
+
+      <label for="category">3. Kategori Dataset</label>
+      <input type="text" id="category" name="category" placeholder="Kategori dataset Anda" required>
+
+      <label for="format">4. Format Dataset</label>
+      <input type="text" id="format" name="format" placeholder="E.g. excel, csv, dll" required>
+
+      <div class="button-group">
+        <a href="{% url 'homepage' %}" class="btn-back">Back</a>
+        <button type="submit" class="btn-next">Next</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-text">DigiBox</p>
+    <a href="#" class="footer-link">About us</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Dataset - DigiBox</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      height: 70px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .profile-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    main.form-container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 30px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #002a5c;
+      margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .dataset-form {
+      text-align: left;
+    }
+
+    .dataset-form label {
+      font-weight: bold;
+      margin: 15px 0 5px;
+      display: block;
+    }
+
+    .dataset-form input[type="file"],
+    .dataset-form input[type="text"],
+    .dataset-form input[type="number"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      background-color: #f2f2f2;
+      font-size: 14px;
+      color: #000;
+      margin-bottom: 15px;
+    }
+
+    .file-input {
+      background-color: white;
+      padding: 12px;
+      border-radius: 25px;
+      border: 1px solid #ddd;
+    }
+
+    .dataset-form input::placeholder {
+      color: #666;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-back, .btn-submit {
+      background-color: #0b0b38;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-back:hover, .btn-submit:hover {
+      background-color: #1c1c5c;
+    }
+
+    .footer {
+      background-color: #0b0b38;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .message-list {
+      margin-top: 20px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .message.success { background-color: #d4edda; color: #155724; }
+    .message.error { background-color: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+    <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
+  </header>
+
+  <main class="form-container">
+    <h2 class="form-title">Mulai Proyek Anda dengan Dataset Baru</h2>
+    <p class="form-subtitle">
+      Buat dataset baru untuk dianalisis, dibagikan, atau digunakan dalam model Anda dengan mudah dan efisien sesuai dengan kebutuhan Anda.
+    </p>
+
+    <form class="dataset-form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="dataset_file">1. File Dataset</label>
+      <input type="file" id="dataset_file" name="dataset_file" required>
+
+      <label for="num_rows">2. Jumlah Baris (Row) dalam Dataset</label>
+      <input type="number" id="num_rows" name="num_rows" placeholder="Masukkan jumlah baris" required>
+
+      <label for="num_features">3. Jumlah Fitur dalam Dataset</label>
+      <input type="number" id="num_features" name="num_features" placeholder="Masukkan jumlah fitur" required>
+
+      <label for="keywords">4. Kata Kunci Pencarian Dataset Anda</label>
+      <input type="text" id="keywords" name="keywords" placeholder="Contoh: kesehatan, cuaca, ekonomi" required>
+
+      <label for="image">5. Profil Dataset (Gambar)</label>
+      <input type="file" id="image" name="image" accept="image/*" class="file-input" required>
+
+      <div class="button-group">
+        <a href="{% url 'create_dataset2' %}" class="btn-back">Back</a>
+        <button type="submit" class="btn-submit">Submit</button>
+      </div>
+    </form>
+
+    {% if messages %}
+      <div class="message-list">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </main>
+
+  <footer class="footer">
+    <div>DigiBox</div>
+    <a href="#">About us</a>
+  </footer>
+
+</body>
+</html>

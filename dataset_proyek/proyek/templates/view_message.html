@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail Dataset Request</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e1e;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      width: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 2.0rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    .profile-icon {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .detail-box {
+      background: #d7e9ec;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .detail-box h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #0a0a32;
+    }
+
+    .field-row {
+      margin-bottom: 1rem;
+    }
+
+    .field-label {
+      font-weight: bold;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 10px 20px;
+      background-color: #1a202c;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      text-align: center;
+      float: right;
+    }
+
+    .footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+    <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
+  </header>
+
+  <!-- Content -->
+  <main class="main-content">
+  <div class="detail-box">
+    <h2>Dataset Requests</h2>
+
+    <div class="field-row"><span class="field-label">Project Name:</span> {{ message.project_name }}</div>
+    <div class="field-row"><span class="field-label">Description Problem:</span> {{ message.description }}</div>
+    <div class="field-row"><span class="field-label">Target:</span> {{ message.target }}</div>
+    <div class="field-row"><span class="field-label">Type Data:</span> {{ message.data_type }}</div>
+    <div class="field-row"><span class="field-label">Aktivitas Pemrosesan Data:</span> {{ message.aktivitas_pemrosesan }}</div>
+    <div class="field-row"><span class="field-label">Jumlah fitur:</span> {{ message.jumlah_fitur }}</div>
+    <div class="field-row"><span class="field-label">Ukuran Dataset:</span> {{ message.ukuran_dataset }}</div>
+    <div class="field-row"><span class="field-label">Format file:</span> {{ message.format_file }}</div>
+    <div class="field-row"><span class="field-label">Start Date:</span> {{ message.start_date }}</div>
+    <div class="field-row"><span class="field-label">End Date:</span> {{ message.end_date }}</div>
+    <div class="field-row"><span class="field-label">Status:</span> {{ message.status }}</div>
+
+    <a href="{% url 'inbox' %}" class="back-button">Back</a>
+  </div>
+</main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>DigiBox</div>
+    <a href="#">About us</a>
+  </footer>
+
+</body>
+</html>

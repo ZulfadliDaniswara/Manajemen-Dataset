@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Dataset</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e1e;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      width: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 2rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .search-section input {
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      background: none;
+    }
+
+    .search-icon {
+      width: 16px;
+      margin-left: 8px;
+    }
+
+    .profile-icon {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 800px;
+      width: 100%;
+      margin: 40px auto;
+      background-color: #eaf7f7;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #002c3e;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background-color: #f1fefe;
+      font-size: 14px;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 25px;
+      border-radius: 25px;
+      border: none;
+      font-weight: bold;
+      background-color: #1a202c;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #2c2f3c;
+    }
+
+    .footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.85rem;
+      margin-top: auto;
+    }
+
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+
+    <div class="header-right">
+      <div class="search-section">
+        <input type="text" placeholder="Search" />
+        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+      </div>
+      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
+    </div>
+  </header>
+
+  <main>
+    <h2>Edit Dataset</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="title">Judul</label>
+      <input type="text" name="title" id="title" value="{{ dataset.title }}" required>
+
+      <label for="description">Deskripsi</label>
+      <textarea name="description" id="description">{{ dataset.description }}</textarea>
+
+      <label for="category">Kategori</label>
+      <input type="text" name="category" id="category" value="{{ dataset.category }}">
+
+      <label for="file_format">Format File</label>
+      <input type="text" name="file_format" id="file_format" value="{{ dataset.file_format }}">
+
+      <label for="creator_name">Pembuat</label>
+      <input type="text" name="creator_name" id="creator_name" value="{{ dataset.creator_name }}">
+
+      <label for="verifier_name">Verifikator</label>
+      <input type="text" name="verifier_name" id="verifier_name" value="{{ dataset.verifier_name }}">
+
+      <label for="num_rows">Jumlah Baris</label>
+      <input type="number" name="num_rows" id="num_rows" value="{{ dataset.num_rows }}">
+
+      <label for="num_features">Jumlah Fitur</label>
+      <input type="number" name="num_features" id="num_features" value="{{ dataset.num_features }}">
+
+      <label for="keywords">Kata Kunci</label>
+      <input type="text" name="keywords" id="keywords" value="{{ dataset.keywords }}">
+
+      <label for="image">Ganti Gambar (opsional)</label>
+      <input type="file" name="image" id="image">
+
+      <div class="button-group">
+        <button type="submit" class="btn">Simpan</button>
+        <a href="{% url 'your_dataset' %}" class="btn">Batal</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <div>DigiBox</div>
+    <a href="#">About us</a>
+  </footer>
+
+</body>
+</html>

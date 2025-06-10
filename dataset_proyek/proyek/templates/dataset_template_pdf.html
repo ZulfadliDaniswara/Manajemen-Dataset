@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ dataset.title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      color: #000;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .dataset-header {
+      margin-bottom: 20px;
+    }
+
+    .dataset-image {
+      width: 150px;
+      height: auto;
+    }
+
+    .dataset-info h2 {
+      font-size: 20px;
+      margin: 10px 0 5px;
+    }
+
+    .dataset-info p {
+      font-size: 12px;
+      margin: 3px 0;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .section h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .section p, .icon-label {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .tag {
+      display: inline-block;
+      background-color: #eee;
+      padding: 3px 8px;
+      margin: 2px;
+      font-size: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .charts-row img {
+      width: 300px;
+      margin: 10px 10px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="dataset-header">
+    <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-image">
+    <div class="dataset-info">
+      <h2>{{ dataset.title }}</h2>
+      <p>Dibuat pada {{ dataset.created_at|date:"d/m/Y" }}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>About dataset:</h3>
+    <p>{{ dataset.description }}</p>
+    <p class="icon-label"><strong>Kategori:</strong> {{ dataset.category }}</p>
+    <p class="icon-label"><strong>Jumlah Data:</strong> {{ dataset.num_rows }}</p>
+    <p class="icon-label"><strong>Fitur:</strong> {{ dataset.num_features }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Tags:</h3>
+    {% for tag in keywords_list %}
+      <span class="tag">{{ tag }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="section">
+    <h3>Creator:</h3>
+    <p>{{ dataset.creator_name }}</p>
+    <h3>Verifier:</h3>
+    <p>{{ dataset.verifier_name }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Activity details:</h3>
+    <div class="charts-row">
+      <img src="{{ view_chart_url }}" alt="Chart Views">
+      <img src="{{ download_chart_url }}" alt="Chart Downloads">
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Dataset</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e1e;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      width: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 2.0rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .search-section input {
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      background: none;
+    }
+
+    .search-icon {
+      width: 16px;
+      margin-left: 8px;
+    }
+
+    .profile-icon {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    .content {
+      padding: 2rem;
+      flex-grow: 1;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      color: #1e1e1e;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .dataset-card {
+      background: #d7e9ec;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+
+    .dataset-image {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .dataset-info {
+      flex: 1;
+      margin-left: 1rem;
+    }
+
+    .dataset-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .dataset-updated {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .dataset-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dataset-actions a {
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: white;
+      text-decoration: none;
+    }
+
+    .edit-btn { background-color: #2c7a7b; }
+    .delete-btn { background-color: #e53e3e; }
+    .view-btn { background-color: #1a202c; }
+
+    .empty-message {
+      font-size: 0.95rem;
+      color: #333;
+      margin-top: 1.5rem;
+    }
+
+    .footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 600px) {
+      .dataset-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .dataset-info {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .dataset-actions {
+        flex-direction: column;
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-section">
+      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+      <span class="logo-text">DigiBox</span>
+    </div>
+
+    <div class="header-right">
+      <div class="search-section">
+        <input type="text" placeholder="Search" />
+        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+      </div>
+      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
+    </div>
+  </header>
+
+  <main class="content">
+    <h2 class="title">Dataset Saya</h2>
+    <p class="subtitle">Kelola dataset yang telah Anda buat atau unggah. Lihat detail, edit, atau analisis data dengan mudah.</p>
+
+    {% if datasets %}
+      {% for dataset in datasets %}
+      <div class="dataset-card">
+        <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-image">
+        <div class="dataset-info">
+          <h3>{{ dataset.title }}</h3>
+          <p class="dataset-updated">
+            {% if dataset.created_at %}
+              Update terakhir: {{ dataset.created_at|timesince }} yang lalu
+            {% else %}
+              New
+            {% endif %}
+          </p>
+        </div>
+        <div class="dataset-actions">
+          <a href="{% url 'edit_dataset' dataset.id %}" class="edit-btn">Edit</a>
+          <a href="{% url 'view_dataset' dataset.id %}" class="view-btn">View</a>
+          <a href="{% url 'delete_dataset' dataset.id %}" class="delete-btn">Delete</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="empty-message">Belum ada dataset. Silakan buat satu!</p>
+    {% endif %}
+
+        {% if messages %}
+          <div class="message-container">
+        {% for message in messages %}
+          <div class="message">{{ message }}</div>
+        {% endfor %}
+          </div>
+        {% endif %}
+  </main>
+
+  <footer class="footer">
+    <div>DigiBox</div>
+    <a href="#">About us</a>
+  </footer>
+
+</body>
+</html>

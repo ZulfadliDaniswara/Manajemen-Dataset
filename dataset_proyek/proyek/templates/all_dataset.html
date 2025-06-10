@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DigiBox - All Dataset</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
+      color: #1e1e1e;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      width: 90px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 2.0rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .search-section input {
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      background: none;
+    }
+
+    .search-icon {
+      width: 16px;
+      margin-left: 8px;
+    }
+
+    .profile-icon img {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    .hero {
+      padding: 1rem 2rem;
+    }
+
+    .hero h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    .lastview-list {
+      padding: 0 2rem;
+    }
+
+    .lastview-list h2 {
+      margin-bottom: 1rem;
+    }
+
+    .dataset-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #d7e9ec;
+      padding: 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+
+    .dataset-card img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .dataset-title {
+      flex-grow: 1;
+      margin-left: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .view-button {
+      padding: 0.5rem 1.4rem;
+      background-color: #2f2f35;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .view-button:hover {
+      background-color: #444;
+    }
+
+    .footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-link {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    @media screen and (max-width: 600px) {
+      .dataset-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .dataset-title {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .view-button {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo-section">
+    <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+    <span class="logo-text">DigiBox</span>
+  </div>
+
+  <div class="header-right">
+    <div class="search-section">
+      <input type="text" placeholder="Search" />
+      <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+    </div>
+    <div class="profile-icon">
+      <img src="{% static 'images/profile.png' %}" alt="User" />
+    </div>
+  </div>
+</header>
+
+<!-- Hero Text -->
+<section class="hero">
+  <h1>Koleksi Dataset</h1>
+  <p>“Lihat dan kelola semua dataset yang telah diunggah. Gunakan fitur pencarian dan filter untuk menemukan dataset yang Anda butuhkan dengan cepat.”</p>
+</section>
+
+<!-- All Dataset Section -->
+<section class="lastview-list">
+  <h2>All Dataset</h2>
+
+  <div class="dataset-card">
+    <img src="{% static 'images/ferrari.jpg' %}" alt="Racer car">
+    <span class="dataset-title">Racer car</span>
+    <button class="view-button">View</button>
+  </div>
+
+  <div class="dataset-card">
+    <img src="{% static 'images/rashford.jpg' %}" alt="Football League">
+    <span class="dataset-title">Football League</span>
+    <button class="view-button">View</button>
+  </div>
+
+  <div class="dataset-card">
+    <img src="{% static 'images/spiderman.jpg' %}" alt="Super Hero">
+    <span class="dataset-title">Super Hero</span>
+    <button class="view-button">View</button>
+  </div>
+
+  <div class="dataset-card">
+    <img src="{% static 'images/valverde.jpg' %}" alt="player Football">
+    <span class="dataset-title">Player football</span>
+    <button class="view-button">View</button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-logo">DigiBox</div>
+  <a href="#" class="footer-link">About us</a>
+</footer>
+
+</body>
+</html>

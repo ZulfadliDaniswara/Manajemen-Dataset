@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Isi Dataset dari Pesan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      color: #000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      height: 70px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .profile-icon {
+      width: 45px;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      flex-grow: 1;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p.subtitle {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form input[type="date"],
+    form input[type="file"],
+    form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: none;
+      background-color: #dbeff0;
+      font-size: 14px;
+      color: #000;
+    }
+
+    form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 25px;
+      border-radius: 25px;
+      border: none;
+      background-color: #1a202c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: #333;
+    }
+
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background-color: #0a0a32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-section">
+    <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+    <span class="logo-text">DigiBox</span>
+  </div>
+  <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
+</header>
+
+<main>
+  <h2>Mulai Proyek Anda dengan Dataset Baru</h2>
+  <p class="subtitle">
+    Buat dataset baru untuk dianalisis, dibagikan, atau digunakan dalam model Anda dengan mudah dan efisien sesuai dengan kebutuhan anda.
+  </p>
+
+  {% if form_errors %}
+    <p class="error-message">{{ form_errors }}</p>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="project_name">1. Project Name</label>
+      <input type="text" id="project_name" name="project_name" value="{{ message.project_name|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="description">2. Description Problem</label>
+      <textarea id="description" name="description">{{ message.description|default:'' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="target">3. Target</label>
+      <input type="text" id="target" name="target" value="{{ message.target|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="type_data">4. Type Data</label>
+      <input type="text" id="type_data" name="type_data" value="{{ message.type_data|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="processing">5. Aktivitas Pemrosesan Data</label>
+      <input type="text" id="processing" name="processing" value="{{ message.processing|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="num_features">6. Jumlah Fitur</label>
+      <input type="number" id="num_features" name="num_features" value="{{ message.num_features|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="dataset_size">7. Ukuran Dataset</label>
+      <input type="text" id="dataset_size" name="dataset_size" value="{{ message.dataset_size|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="format_file">8. Format File</label>
+      <input type="text" id="format_file" name="format_file" value="{{ message.format_file|default:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="start_date">9. Start Date</label>
+      <input type="date" id="start_date" name="start_date" value="{{ message.start_date|date:'Y-m-d' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="end_date">10. End Date</label>
+      <input type="date" id="end_date" name="end_date" value="{{ message.end_date|date:'Y-m-d' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="file">11. File Dataset (CSV)</label>
+      <input type="file" id="file" name="file" accept=".csv">
+    </div>
+
+    <div class="button-group">
+      <a href="{% url 'inbox' %}" class="btn">Back</a>
+      <button type="submit" class="btn">Next</button>
+    </div>
+  </form>
+</main>
+
+<footer>
+  <div>DigiBox</div>
+  <a href="#">About us</a>
+</footer>
+
+</body>
+</html>
