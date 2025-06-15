@@ -147,5 +147,5 @@ REST_FRAMEWORK = {
 # kasih ke ariels
 AUTHORIZED_API_TOKEN = 'inirahasia'
 # punya web ariel
-TEMAN_API_URL = "https://ganti-dengan-url-api-teman-anda.com/endpoint-penerima/"
+TEMAN_API_URL = "https://arlellll.pythonanywhere.com/api-content/dataset-requests/"
 TARGET_API_TOKEN = 'token_rahasia_dari_teman_anda'
