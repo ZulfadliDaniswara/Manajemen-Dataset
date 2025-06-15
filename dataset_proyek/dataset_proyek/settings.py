@@ -132,8 +132,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'proyek', 'static'),
 ]
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'  # setelah login sukses
-LOGOUT_REDIRECT_URL = '/login/'  # jika kamu nanti tambah logout
+LOGIN_REDIRECT_URL = '/'  
+LOGOUT_REDIRECT_URL = '/login/'  
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -144,5 +144,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-# settings.py
-TARGET_API_TOKEN = 'token_dari_teman_kamu'
+# kasih ke ariels
+AUTHORIZED_API_TOKEN = 'inirahasia'
+# punya web ariel
+TEMAN_API_URL = "https://ganti-dengan-url-api-teman-anda.com/endpoint-penerima/"
+TARGET_API_TOKEN = 'token_rahasia_dari_teman_anda'

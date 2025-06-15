@@ -3,145 +3,173 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Detail Dataset Request</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Dataset Request - DigiBox</title>
   <style>
+    /* ================================================================== */
+    /* == GAYA FINAL DIAMBIL DARI SISTEM DESAIN KONSISTEN KITA == */
+    /* ================================================================== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
     }
 
     body {
-      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
-      min-height: 100vh;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+      color: #333;
       display: flex;
       flex-direction: column;
-      color: #1e1e1e;
+      min-height: 100vh;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-icon {
-      width: 90px;
-      margin-right: 10px;
-    }
-
-    .logo-text {
-      font-size: 2.0rem;
-      color: white;
-      font-weight: bold;
-    }
-
-    .profile-icon {
-      width: 45px;
-      cursor: pointer;
-    }
-
-    .main-content {
+    main {
       flex: 1;
-      padding: 2rem;
     }
 
-    .detail-box {
-      background: #d7e9ec;
-      padding: 2rem;
+    .container {
+      width: 96%;
+      max-width: 900px; /* Max-width ideal untuk halaman detail */
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-header { padding-top: 15px; padding-bottom: 15px; }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; text-decoration: none; }
+    .logo-icon { height: 90px; margin-right: 10px; }
+    .logo-text { font-size: 30px; font-weight: bold; color: white; }
+    .header-right { display: flex; align-items: center; }
+    
+    .profile-icon { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; margin-left: 10px; object-fit: cover; transition: transform 0.2s ease; }
+    .profile-icon:hover { transform: scale(1.05); }
+
+    /* Menggunakan kembali gaya .content-card dari halaman "View Dataset" */
+    .content-card {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 2rem 2.5rem;
+      margin: 2rem auto;
       border-radius: 20px;
-      max-width: 700px;
-      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-
-    .detail-box h2 {
-      text-align: center;
+    
+    .content-card h1 {
+      font-size: 28px;
+      color: #002c3e;
       margin-bottom: 2rem;
-      color: #0a0a32;
+      text-align: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #dceaea;
+    }
+    
+    /* Gaya baru untuk baris detail yang rapi */
+    .detail-item {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #eaf2f2;
+      font-size: 1rem;
+    }
+    .detail-item:last-of-type {
+        border-bottom: none;
     }
 
-    .field-row {
-      margin-bottom: 1rem;
-    }
-
-    .field-label {
+    .detail-label {
       font-weight: bold;
+      color: #004050;
+      width: 250px; /* Lebar tetap untuk label */
+      flex-shrink: 0;
     }
 
-    .back-button {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 10px 20px;
-      background-color: #1a202c;
-      color: white;
-      text-decoration: none;
-      border-radius: 25px;
-      text-align: center;
-      float: right;
+    .detail-value {
+      flex-grow: 1;
+    }
+    
+    .action-area {
+        text-align: right;
+        margin-top: 2rem;
     }
 
-    .footer {
-      background-color: #0a0a32;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.85rem;
-    }
+    .btn { padding: 10px 25px; border: none; border-radius: 50px; font-size: 15px; font-weight: bold; color: white; text-decoration: none; cursor: pointer; transition: opacity 0.2s ease; }
+    .btn:hover { opacity: 0.9; }
+    .btn-cancel { background-color: #a0aec0; } /* Gray */
 
-    .footer a {
-      color: #ccc;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
+    .site-footer { background-color: #0b0b38; color: white; margin-top: 40px; padding-top: 25px; padding-bottom: 25px; }
+    .footer-content { text-align: center; }
+    .footer-logo { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+    .footer-link { color: white; font-size: 13px; text-decoration: none; }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+      </div>
     </div>
-    <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
   </header>
-
-  <!-- Content -->
-  <main class="main-content">
-  <div class="detail-box">
-    <h2>Dataset Requests</h2>
-
-    <div class="field-row"><span class="field-label">Project Name:</span> {{ message.project_name }}</div>
-    <div class="field-row"><span class="field-label">Description Problem:</span> {{ message.description }}</div>
-    <div class="field-row"><span class="field-label">Target:</span> {{ message.target }}</div>
-    <div class="field-row"><span class="field-label">Type Data:</span> {{ message.data_type }}</div>
-    <div class="field-row"><span class="field-label">Aktivitas Pemrosesan Data:</span> {{ message.aktivitas_pemrosesan }}</div>
-    <div class="field-row"><span class="field-label">Jumlah fitur:</span> {{ message.jumlah_fitur }}</div>
-    <div class="field-row"><span class="field-label">Ukuran Dataset:</span> {{ message.ukuran_dataset }}</div>
-    <div class="field-row"><span class="field-label">Format file:</span> {{ message.format_file }}</div>
-    <div class="field-row"><span class="field-label">Start Date:</span> {{ message.start_date }}</div>
-    <div class="field-row"><span class="field-label">End Date:</span> {{ message.end_date }}</div>
-    <div class="field-row"><span class="field-label">Status:</span> {{ message.status }}</div>
-
-    <a href="{% url 'inbox' %}" class="back-button">Back</a>
+  
+  <div id="profile-popup" class="popup-container popup-hidden">
+      <div class="popup-card">
+          <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+          <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+          <div class="popup-name">{{ request.user.username }}</div>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+      </div>
   </div>
+
+    <main>
+    <div class="container">
+        <div class="content-card">
+            <h1>Detail Permintaan Dataset</h1>
+
+            <div class="detail-item"><span class="detail-label">Nama Proyek:</span> <span class="detail-value">{{ message.project_name }}</span></div>
+            <div class="detail-item"><span class="detail-label">Deskripsi Masalah:</span> <span class="detail-value">{{ message.description }}</span></div>
+            <div class="detail-item"><span class="detail-label">Target:</span> <span class="detail-value">{{ message.target }}</span></div>
+            <div class="detail-item"><span class="detail-label">Tipe Data:</span> <span class="detail-value">{{ message.data_type }}</span></div>
+            <div class="detail-item"><span class="detail-label">Aktivitas Pemrosesan:</span> <span class="detail-value">{{ message.aktivitas_pemrosesan }}</span></div>
+            <div class="detail-item"><span class="detail-label">Jumlah Fitur:</span> <span class="detail-value">{{ message.jumlah_fitur }}</span></div>
+            <div class="detail-item"><span class="detail-label">Ukuran Dataset:</span> <span class="detail-value">{{ message.ukuran_dataset }}</span></div>
+            <div class="detail-item"><span class="detail-label">Format File:</span> <span class="detail-value">{{ message.format_file }}</span></div>
+            <div class="detail-item"><span class="detail-label">Tanggal Mulai:</span> <span class="detail-value">{{ message.start_date }}</span></div>
+            <div class="detail-item"><span class="detail-label">Tanggal Selesai:</span> <span class="detail-value">{{ message.end_date }}</span></div>
+            <div class="detail-item"><span class="detail-label">Status:</span> <span class="detail-value">{{ message.status }}</span></div>
+
+            <div class="action-area">
+                <a href="{% url 'inbox' %}" class="btn btn-cancel">Kembali</a>
+            </div>
+        </div>
+    </div>
 </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div>DigiBox</div>
-    <a href="#">About us</a>
+  <footer class="site-footer">
+      <div class="container footer-content">
+          <div class="footer-logo">DigiBox</div>
+          <a href="#" class="footer-link">About us</a>
+      </div>
   </footer>
+  
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+    function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+    document.addEventListener('click', function(event) { if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) { popup.classList.add('popup-hidden'); } });
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
 
 </body>
 </html>

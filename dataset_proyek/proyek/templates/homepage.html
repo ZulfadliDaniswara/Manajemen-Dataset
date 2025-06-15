@@ -25,11 +25,22 @@
       flex: 1;
     }
 
-    .header {
+    .container {
+    width: 96%; 
+    max-width: 1920px; 
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .site-header {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 8%;
     }
 
     .logo-section {
@@ -52,8 +63,8 @@
       display: flex;
       align-items: center;
     }
-
-    .search-section {
+    
+    .search-form {
       display: flex;
       align-items: center;
       background-color: white;
@@ -61,20 +72,28 @@
       padding: 5px 10px;
     }
 
-    .search-section input {
+    .search-form input {
       border: none;
       outline: none;
       background: transparent;
       font-size: 14px;
     }
 
+    .search-submit-button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
     .search-icon {
       width: 16px;
       height: 16px;
       margin-left: 5px;
+      display: block;
     }
 
-    .message-icon {
+    .message-icon, .profile-icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -84,32 +103,29 @@
       transition: transform 0.2s ease;
     }
 
-    .message-icon:hover {
+    .message-icon:hover, .profile-icon:hover {
       transform: scale(1.05);
     }
 
-    .profile-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-
     .hero {
-      padding: 60px 8% 40px;
+      padding-top: 60px;
+      padding-bottom: 40px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .hero h1 {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: bold;
       color: #004050;
       margin-bottom: 8px;
     }
 
     .hero p {
-      font-size: 14px;
-      max-width: 500px;
+      font-size: 16px;
+      max-width: 600px;
       color: #333;
       margin-bottom: 20px;
       line-height: 1.6;
@@ -119,10 +135,11 @@
       background-color: #d5eaea;
       border: none;
       border-radius: 50px;
-      padding: 10px 25px;
+      padding: 12px 30px;
       font-weight: bold;
       cursor: pointer;
       color: #004050;
+      font-size: 16px;
     }
 
     .cta-button-wrapper {
@@ -131,23 +148,25 @@
     }
 
     .dataset-section {
-      padding: 20px 8%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      margin-top: 20px;
     }
 
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     .section-header h2 {
-      font-size: 18px;
+      font-size: 22px;
       color: #002c3e;
     }
 
     .section-header a {
-      font-size: 13px;
+      font-size: 14px;
       text-decoration: none;
       color: #002c3e;
       font-weight: 500;
@@ -155,27 +174,34 @@
 
     .dataset-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
     }
 
     .dataset-grid img {
       width: 100%;
-      height: 90px;
+      height: 180px;
       object-fit: cover;
       border-radius: 20px;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     .dataset-grid img:hover {
       transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
-    .footer {
+    .site-footer {
       background-color: #0b0b38;
-      padding: 25px 8%;
-      text-align: center;
       color: white;
+      margin-top: 40px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+    
+    .footer-content {
+        text-align: center;
     }
 
     .footer-logo {
@@ -194,140 +220,93 @@
       text-decoration: underline;
     }
 
-    .popup-container {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .popup-card {
-      position: relative;
-      background: #f0f0f0;
-      padding: 2rem;
-      border-radius: 25px;
-      text-align: center;
-      width: 300px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .popup-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-      object-fit: cover;
-    }
-
-    .popup-name {
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .popup-link {
-      display: block;
-      margin: 12px 0;
-      font-size: 1.1rem;
-      text-decoration: none;
-      color: #0077cc;
-      font-weight: 500;
-    }
-
-    .popup-close {
-      font-size: 24px;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      cursor: pointer;
-      color: #555;
-    }
-
-    .popup-hidden {
-      display: none;
-    }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
-    </div>
-
-    <div class="header-right">
-      <div class="search-section">
-        <input type="text" placeholder="Search" />
-        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
-      </div>
-
-      <!-- Ikon Pesan -->
-      <a href="{% url 'inbox' %}" title="Pesan Masuk">
-        <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
+  <header class="site-header">
+      <div class="container header-content">
+       <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
       </a>
-
-      <!-- Ikon Profil -->
-      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
-    </div>
+        <div class="header-right">
+          <form method="GET" action="{% url 'search_results' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search" />
+            <button type="submit" class="search-submit-button">
+              <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+            </button>
+          </form>
+    
+          <a href="{% url 'inbox' %}" title="Pesan Masuk">
+            <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
+          </a>
+    
+          <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+        </div>
+      </div>
   </header>
 
-  <!-- Profile Popup -->
   <div id="profile-popup" class="popup-container popup-hidden">
     <div class="popup-card">
-      <div class="popup-close" onclick="toggleProfilePopup()">X</div>
+      <div class="popup-close" onclick="toggleProfilePopup()">x</div>
       <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
       <div class="popup-name">{{ request.user.username }}</div>
-      <a href="{% url 'your_dataset' %}" class="popup-link">📂 Your Dataset</a>
-      <a href="{% url 'logout' %}" class="popup-link">🔓 Logout</a>
+      <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+      <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
     </div>
   </div>
 
   <main>
-    <section class="hero">
-      <h1>Jelajahi Dunia Data, Tanpa Batas</h1>
-      <p>Temukan dan akses beragam dataset berkualitas tinggi untuk mendukung riset, analisis, dan pengembangan teknologi.</p>
-      <div class="cta-button-wrapper">
-        <button class="cta-button" onclick="window.location.href='/create_dataset/'">Create Dataset</button>
-      </div>
-    </section>
-
-    <section class="dataset-section">
-      <div class="section-header">
-        <h2>All Dataset</h2>
-        <a href="{% url 'all_datasets' %}">View all →</a>
-      </div>
-      <div class="dataset-grid">
-        <img src="{% static 'images/rashford.jpg' %}" alt="dataset">
-        <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
-        <img src="{% static 'images/spiderman.jpg' %}" alt="dataset">
-        <img src="{% static 'images/valverde.jpg' %}" alt="dataset">
-      </div>
-    </section>
-
-    <section class="dataset-section">
-      <div class="section-header">
-        <h2>Last View</h2>
-        <a href="{% url 'lastview_dataset' %}">View all →</a>
-      </div>
-      <div class="dataset-grid">
-        <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
-        <img src="{% static 'images/tifomu.jpg' %}" alt="dataset">
-        <img src="{% static 'images/ultinolan.jpg' %}" alt="dataset">
-        <img src="{% static 'images/lego.jpg' %}" alt="dataset">
-      </div>
-    </section>
+    <div class="container">
+      <section class="hero">
+        <h1>Jelajahi Dunia Data, Tanpa Batas</h1>
+        <p>Temukan dan akses beragam dataset berkualitas tinggi untuk mendukung riset, analisis, dan pengembangan teknologi.</p>
+        <div class="cta-button-wrapper">
+          <button class="cta-button" onclick="window.location.href='/create_dataset/'">Create Dataset</button>
+        </div>
+      </section>
+  
+      <section class="dataset-section">
+        <div class="section-header">
+          <h2>All Dataset</h2>
+          <a href="{% url 'all_datasets' %}">View all →</a>
+        </div>
+        <div class="dataset-grid">
+          <img src="{% static 'images/rashford.jpg' %}" alt="dataset">
+          <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
+          <img src="{% static 'images/spiderman.jpg' %}" alt="dataset">
+          <img src="{% static 'images/valverde.jpg' %}" alt="dataset">
+        </div>
+      </section>
+  
+      <section class="dataset-section">
+        <div class="section-header">
+          <h2>Last View</h2>
+          <a href="{% url 'lastview_dataset' %}">View all →</a>
+        </div>
+        <div class="dataset-grid">
+          <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
+          <img src="{% static 'images/tifomu.jpg' %}" alt="dataset">
+          <img src="{% static 'images/ultinolan.jpg' %}" alt="dataset">
+          <img src="{% static 'images/lego.jpg' %}" alt="dataset">
+        </div>
+      </section>
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="footer-logo">DigiBox</div>
-    <a href="#" class="footer-link">About us</a>
+  <footer class="site-footer">
+      <div class="container footer-content">
+        <div class="footer-logo">DigiBox</div>
+        <a href="#" class="footer-link">About us</a>
+      </div>
   </footer>
 
   <script>

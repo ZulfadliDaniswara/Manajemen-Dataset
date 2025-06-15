@@ -9,9 +9,8 @@ class Dataset(models.Model):
     category = models.CharField(max_length=100)
     file_format = models.CharField(max_length=50)
 
-    # Pisahkan antara image profil dan file dataset
-    image = models.ImageField(upload_to='dataset_images/')  # gambar profil
-    dataset_file = models.FileField(upload_to='dataset_files/', null=True, blank=True)  # file CSV, Excel, dll
+    image = models.ImageField(upload_to='dataset_images/')
+    dataset_file = models.FileField(upload_to='dataset_files/', null=True, blank=True)
 
     creator_name = models.CharField(max_length=100)
     verifier_name = models.CharField(max_length=100)
@@ -21,8 +20,20 @@ class Dataset(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    is_public = models.BooleanField(default=False)  
+
+    click_count = models.PositiveIntegerField(default=0, verbose_name="Jumlah Dilihat")
+    download_count = models.PositiveIntegerField(default=0, verbose_name="Jumlah Diunduh")
+
     def __str__(self):
         return self.title
+
+class DownloadLog(models.Model):
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name='download_logs')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.dataset.title} downloaded at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
 
 class ExternalMessage(models.Model):
     project_name = models.CharField(max_length=255)
@@ -41,4 +52,4 @@ class ExternalMessage(models.Model):
 
     def __str__(self):
         return self.project_name
-
+    

@@ -14,19 +14,29 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from xhtml2pdf import pisa
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import generics, status, views
+from django.db.models import F
+from datetime import timedelta
+from django.db.models import Count
+from django.db.models.functions import TruncDay
 
 from .models import Dataset, ExternalMessage
 from .forms import RegisterForm
 from io import BytesIO
+from .models import ExternalMessage
+from .serializers import MessageSerializer
+from datetime import datetime
+from django.db.models import Q
+from .models import Dataset, DownloadLog 
+from xhtml2pdf import pisa
 
+import pandas as pd 
 import tempfile
 import os
 import json
 import requests
-from datetime import datetime
-
-# Contoh token dari kelompok pengirim (bisa disimpan di settings/env)
-AUTHORIZED_API_TOKEN = '123456789abcdef'  # Ganti dengan token asli, atau ambil dari settings
 
 def landing_page(request):
     return render(request, 'landingpage.html')
@@ -103,12 +113,9 @@ def logout_view(request):
     auth_logout(request)
     return redirect('landing')
 
+@login_required
 def all_datasets(request):
-    datasets = [
-        {'nama': 'Racer Car', 'gambar': 'gambar/ferrari.jpg'},
-        {'nama': 'Football League', 'gambar': 'gambar/rashford.jpeg'},
-        {'nama': 'Super Hero', 'gambar': 'gambar/dataset3.jpg'},
-    ]
+    datasets = Dataset.objects.filter(is_public=True).order_by('-created_at')
     return render(request, 'all_dataset.html', {'datasets': datasets})
 
 def lastview_dataset(request):
@@ -120,75 +127,106 @@ def lastview_dataset(request):
 
 def create_dataset(request):
     if request.method == 'POST':
-        request.session['name'] = request.POST.get('name')
+        request.session['name'] = request.POST.get('name')  
         request.session['description'] = request.POST.get('description')
         request.session['category'] = request.POST.get('category')
         request.session['format'] = request.POST.get('format')
-
-        # Jangan simpan file di session
-
         return redirect('create_dataset2')
-
     return render(request, 'create_dataset.html')
 
-
-
+# Halaman 2 – Tambahan metadata pembuat dan verifikator
 def create_dataset2(request):
     if request.method == 'POST':
         request.session['creator_name'] = request.POST.get('creator_name')
         request.session['verifier_name'] = request.POST.get('verifier_name')
 
-        return redirect('create_dataset3')  # Redirect ke halaman terakhir
+        return redirect('create_dataset3')
 
     return render(request, 'create_dataset2.html')
 
-from django.contrib.auth.decorators import login_required
-
+# Halaman 3 – Upload file, gambar, checkbox publikasi, simpan ke DB
 @login_required
 def create_dataset3(request):
     if request.method == 'POST':
-        image = request.FILES.get('image')
         dataset_file = request.FILES.get('dataset_file')
-        num_rows = request.POST.get('num_rows')
-        num_features = request.POST.get('num_features')
-        keywords = request.POST.get('keywords')
+        
+        # Ambil data lain dari form
+        image = request.FILES.get('image')
+        is_public = request.POST.get('is_public') == 'on'
+        
+        num_rows = 0
+        num_features = 0
+        keywords = "" # Default value jika file tidak ada atau bukan CSV
 
-        name = request.session.get('name')
+        if dataset_file:
+            # Validasi sederhana, pastikan file adalah .csv
+            if not dataset_file.name.endswith('.csv'):
+                messages.error(request, 'File harus berformat .csv')
+                return render(request, 'create_dataset3.html')
+            
+            try:
+                # Baca file csv menggunakan pandas
+                df = pd.read_csv(dataset_file)
+                
+                # UBAH: Ambil jumlah baris dan fitur dari file
+                num_rows = df.shape[0]
+                num_features = df.shape[1]
+                
+                # UBAH: Ambil nama kolom/fitur dan gabungkan menjadi string
+                # Ini akan disimpan di field 'keywords'
+                keywords = ', '.join(df.columns)
+                
+            except Exception as e:
+                messages.error(request, f"Gagal memproses file CSV: {e}")
+                return render(request, 'create_dataset3.html')
+        else:
+            messages.error(request, 'Anda belum mengunggah file dataset.')
+            return render(request, 'create_dataset3.html')
+        # --- AKHIR DARI LOGIKA BARU ---
+
+        # Ambil semua data dari session
+        title = request.session.get('name')
         description = request.session.get('description')
         category = request.session.get('category')
-        format_type = request.session.get('format')
-        creator = request.session.get('creator_name')
-        verifier = request.session.get('verifier_name')
+        file_format = request.session.get('format')
+        creator_name = request.session.get('creator_name')
+        verifier_name = request.session.get('verifier_name')
+        owner = request.user
 
-        if not all([name, description, category, format_type, creator, verifier, image, dataset_file, num_rows, num_features, keywords]):
-            return render(request, 'create_dataset3.html', {
-                'error': 'Harap isi semua kolom dan upload semua file!'
-            })
+        # Validasi session (kode Anda sebelumnya, sudah bagus)
+        required_keys = ['name', 'description', 'category', 'format', 'creator_name', 'verifier_name']
+        missing = [k for k in required_keys if k not in request.session]
+        if missing:
+            messages.error(request, f"Data berikut hilang dari session: {', '.join(missing)}")
+            return redirect('create_dataset')
 
-        # Simpan ke database
-        Dataset.objects.create(
-            title=name,
+        dataset = Dataset.objects.create(
+            title=title,
             description=description,
             category=category,
-            file_format=format_type,
+            file_format=file_format,
             image=image,
             dataset_file=dataset_file,
-            creator_name=creator,
-            verifier_name=verifier,
-            num_rows=int(num_rows),
-            num_features=int(num_features),
-            keywords=keywords,
-            owner=request.user
+            creator_name=creator_name,
+            verifier_name=verifier_name,
+            owner=owner,
+            is_public=is_public,
+            
+            # UBAH: Gunakan variabel yang sudah diisi otomatis
+            num_rows=num_rows,
+            num_features=num_features,
+            keywords=keywords
         )
 
-        # Jangan gunakan flush(), gunakan pop() untuk hapus hanya yang diperlukan
-        for key in ['name', 'description', 'category', 'format', 'creator_name', 'verifier_name']:
-            request.session.pop(key, None)
-
-        return redirect('your_dataset')
+        messages.success(request, "Dataset berhasil dibuat!")
+        # Hapus session setelah berhasil disimpan agar tidak terpakai lagi
+        for key in required_keys:
+            if key in request.session:
+                del request.session[key]
+                
+        return redirect('your_dataset') # Ganti 'your_dataset' dengan nama URL tujuan Anda
 
     return render(request, 'create_dataset3.html')
-
 #@login_required
 @login_required(login_url='/login/') 
 def your_dataset(request):
@@ -198,14 +236,49 @@ def your_dataset(request):
     })
 
 #@login_required
+
 def view_dataset(request, id):
     dataset = get_object_or_404(Dataset, pk=id)
     keywords_list = dataset.keywords.split(",") if dataset.keywords else []
 
+    dataset.click_count = F('click_count') + 1
+    dataset.save()
+    dataset.refresh_from_db()
+
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=30)
+    
+    download_activity = (DownloadLog.objects
+                         .filter(dataset=dataset, timestamp__range=[start_date, end_date])
+                         .annotate(day=TruncDay('timestamp'))
+                         .values('day')
+                         .annotate(count=Count('id'))
+                         .order_by('day'))
+    print("--- DEBUGGING: DATA MENTAH DARI DATABASE ---")
+    print(list(download_activity))
+
+    date_map = { (start_date + timedelta(days=i)).strftime('%Y-%m-%d'): 0 for i in range(31) }
+    
+    for activity in download_activity:
+        day_str = activity['day'].strftime('%Y-%m-%d')
+        if day_str in date_map:
+            date_map[day_str] = activity['count']
+            
+    activity_labels = list(date_map.keys())
+    activity_data = list(date_map.values())
+
+    print("\n--- DEBUGGING: DATA FINAL UNTUK GRAFIK ---")
+    print("Labels:", activity_labels)
+    print("Data:", activity_data)
+    print("------------------------------------------")
+
     context = {
         'dataset': dataset,
-        'keywords_list': [k.strip() for k in keywords_list],  # bersihkan spasi
+        'keywords_list': [k.strip() for k in keywords_list],
+        'activity_labels': json.dumps([d[5:] for d in activity_labels]),
+        'activity_data': json.dumps(activity_data)
     }
+    
     return render(request, 'view_dataset.html', context)
 
 @login_required
@@ -219,9 +292,6 @@ def edit_dataset(request, id):
         dataset.file_format = request.POST.get('file_format')
         dataset.creator_name = request.POST.get('creator_name')
         dataset.verifier_name = request.POST.get('verifier_name')
-        dataset.num_rows = request.POST.get('num_rows')
-        dataset.num_features = request.POST.get('num_features')
-        dataset.keywords = request.POST.get('keywords')
         if request.FILES.get('image'):
             dataset.image = request.FILES.get('image')
         dataset.save()
@@ -237,6 +307,11 @@ def delete_dataset(request, id):
 
 def download_dataset(request, dataset_id):
     dataset = get_object_or_404(Dataset, id=dataset_id)
+
+    dataset.download_count = F('download_count') + 1
+    dataset.save()
+
+    DownloadLog.objects.create(dataset=dataset)
 
     if not dataset.dataset_file:
         raise Http404("File tidak ditemukan.")
@@ -272,7 +347,6 @@ def print_dataset_pdf(request, dataset_id):
     else:
         return HttpResponse("Gagal generate PDF", status=500)
 
-
 def inbox_view(request):
     messages = ExternalMessage.objects.all().order_by('-timestamp')
     return render(request, 'inbox.html', {'messages': messages})
@@ -281,149 +355,169 @@ def view_message(request, message_id):
     message = get_object_or_404(ExternalMessage, id=message_id)
     return render(request, 'view_message.html', {'message': message})
 
-@csrf_exempt
-def receive_message_api(request):
-    if request.method == 'POST':
-        # 🔐 Autentikasi token
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Token '):
-            return JsonResponse({'error': 'Unauthorized: Token header missing or invalid.'}, status=401)
+def search_results_view(request):
+    
+    # Langkah 1: Ambil kata kunci pencarian dari URL (parameter ?q=...)
+    query = request.GET.get('q', '')
+    
+    results = []
+    
+    # Langkah 2: Hanya lakukan pencarian jika ada kata kunci yang dimasukkan
+    if query:
+        results = Dataset.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(keywords__icontains=query)
+        ).distinct() # distinct() untuk memastikan tidak ada hasil yang sama ditampilkan berulang
+    
+    # Langkah 4: Siapkan data (context) untuk dikirim ke template
+    context = {
+        'query': query,     
+        'results': results,  
+    }
+    
+    # Langkah 5: Render template untuk menampilkan halaman hasil pencarian
+    return render(request, 'search_results.html', context)
 
-        token = auth_header.split(' ')[1]
-        if token != AUTHORIZED_API_TOKEN:
-            return JsonResponse({'error': 'Unauthorized: Invalid token.'}, status=403)
+def dataset_statistics_view(request):
+    top_datasets = Dataset.objects.order_by('-click_count')[:10]
+    
+    labels = []
+    click_data = []
+    download_data = []
 
-        try:
-            # Check if request contains multipart data (file upload)
-            content_type = request.headers.get('Content-Type', '')
+    for dataset in top_datasets:
+        labels.append(dataset.title)
+        click_data.append(dataset.click_count)
+        download_data.append(dataset.download_count)
+        
+    context = {
+        'labels': json.dumps(labels),
+        'click_data': json.dumps(click_data),
+        'download_data': json.dumps(download_data),
+    }
+    
+    return render(request, 'view_dataset.html', context)
+
+def dataset_activity_view(request, dataset_id):
+    dataset = get_object_or_404(Dataset, id=dataset_id)
+    
+    # 1. Tentukan rentang waktu (30 hari terakhir)
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=30)
+    
+    # 2. Lakukan query agregasi ke database
+    # Ambil log download, kelompokkan per hari (TruncDay), dan hitung jumlahnya (Count)
+    download_activity = (DownloadLog.objects
+                         .filter(dataset=dataset, timestamp__range=[start_date, end_date])
+                         .annotate(day=TruncDay('timestamp'))
+                         .values('day')
+                         .annotate(count=Count('id'))
+                         .order_by('day'))
+    
+    # 3. Siapkan data untuk Chart.js
+    # Buat dictionary tanggal dari 30 hari terakhir dengan nilai awal 0
+    date_map = { (start_date + timedelta(days=i)).strftime('%Y-%m-%d'): 0 for i in range(31) }
+    
+    # Isi dictionary dengan data dari database
+    for activity in download_activity:
+        day_str = activity['day'].strftime('%Y-%m-%d')
+        if day_str in date_map:
+            date_map[day_str] = activity['count']
             
-            if content_type.startswith('multipart/form-data'):
-                # Handle multipart form data (with file)
-                data = {
-                    'project_name': request.POST.get('project_name'),
-                    'description': request.POST.get('description'),
-                    'target': request.POST.get('target'),
-                    'data_type': request.POST.get('data_type'),
-                    'aktivitas_pemrosesan': request.POST.get('aktivitas_pemrosesan'),
-                    'jumlah_fitur': request.POST.get('jumlah_fitur'),
-                    'ukuran_dataset': request.POST.get('ukuran_dataset'),
-                    'format_file': request.POST.get('format_file'),
-                    'start_date': request.POST.get('start_date'),
-                    'end_date': request.POST.get('end_date'),
-                    'status': request.POST.get('status'),
-                    'sender': request.POST.get('sender', 'unknown')
-                }
-                
-                # Handle uploaded file if present
-                uploaded_file = request.FILES.get('file')
-                if uploaded_file:
-                    # You can process the file here
-                    # For example, save it or read its content
-                    pass
-                    
-            else:
-                # Handle JSON data (without file)
-                data = json.loads(request.body)
+    # Ubah dictionary menjadi dua list untuk label dan data grafik
+    labels = list(date_map.keys())
+    data = list(date_map.values())
 
-            # Validate required fields
-            required_fields = ['project_name', 'description', 'target', 'data_type', 
-                             'aktivitas_pemrosesan', 'jumlah_fitur', 'ukuran_dataset', 
-                             'format_file', 'start_date', 'end_date', 'status']
-            
-            for field in required_fields:
-                if not data.get(field):
-                    return JsonResponse({'error': f'Missing required field: {field}'}, status=400)
+    context = {
+        'dataset': dataset,
+        'labels': json.dumps([d[5:] for d in labels]), # Hanya ambil format 'MM-DD'
+        'data': json.dumps(data)
+    }
+    return render(request, 'nama_app/dataset_activity.html', context)
 
-            message = ExternalMessage.objects.create(
-                project_name=data['project_name'],
-                description=data['description'],
-                target=data['target'],
-                data_type=data['data_type'],
-                aktivitas_pemrosesan=data['aktivitas_pemrosesan'],
-                jumlah_fitur=int(data['jumlah_fitur']),
-                ukuran_dataset=data['ukuran_dataset'],
-                format_file=data['format_file'],
-                start_date=datetime.strptime(data['start_date'], "%Y-%m-%d").date(),
-                end_date=datetime.strptime(data['end_date'], "%Y-%m-%d").date(),
-                status=data['status'],
-                sender=data.get('sender', 'unknown')
-            )
+def sent_items_view(request):
+    # Ambil semua objek balasan yang pernah dikirim, urutkan dari yang terbaru
+    sent_replies = SentReply.objects.all().order_by('-sent_at')
+    
+    context = {
+        'sent_replies': sent_replies
+    }
+    return render(request, 'sent_items.html', context)
 
-            return JsonResponse({'message': 'Pesan berhasil diterima.'}, status=201)
+class ReceiveMessageView(generics.CreateAPIView):
 
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format.'}, status=400)
-        except KeyError as e:
-            return JsonResponse({'error': f'Missing field: {str(e)}'}, status=400)
-        except ValueError as e:
-            return JsonResponse({'error': f'Invalid data format: {str(e)}'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': f'Unexpected error: {str(e)}'}, status=500)
+    queryset = ExternalMessage.objects.all()
+    serializer_class = MessageSerializer
 
-    return JsonResponse({'error': 'Method not allowed'}, status=405)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        
+        response_data = {
+            "status": "success",
+            "message": "Pesan berhasil diterima.",
+            "data": serializer.data
+        }
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+    
+class ReceiveMessageView(generics.CreateAPIView):
+    queryset = ExternalMessage.objects.all()
+    serializer_class = MessageSerializer
 
-def reply_message(request, message_id):
-    message = get_object_or_404(ExternalMessage, id=message_id)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        
+        response_data = {
+            "status": "success",
+            "message": "Pesan berhasil diterima dan disimpan.",
+            "data": serializer.data
+        }
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+
+def reply_message_page(request, pk):
+    try:
+        message_to_reply = ExternalMessage.objects.get(pk=pk)
+    except ExternalMessage.DoesNotExist:
+        return redirect('inbox') 
+
+    default_text = "dataset sudah tersedia silahkan download di web kami"
 
     if request.method == 'POST':
-        # Ambil data dari form
-        data = {
-            'project_name': request.POST.get('project_name'),
-            'description': request.POST.get('description'),
-            'target': request.POST.get('target'),
-            'data_type': request.POST.get('type_data'),
-            'aktivitas_pemrosesan': request.POST.get('processing'),
-            'jumlah_fitur': request.POST.get('num_features'),
-            'ukuran_dataset': request.POST.get('dataset_size'),
-            'format_file': request.POST.get('format_file'),
-            'start_date': request.POST.get('start_date'),
-            'end_date': request.POST.get('end_date'),
-            'status': 'pending',
-            'sender': 'web-kamu'  # Optional
+        # Ambil teks dari textarea di form HTML
+        message_text = request.POST.get('message_text', default_text)
+
+        # Siapkan data JSON yang akan dikirim
+        reply_data = {
+            'reply_to_project': message_to_reply.project_name,
+            'message': message_text,
+            'original_sender': message_to_reply.sender
         }
 
-        file = request.FILES.get('file')  # Bisa juga None
-
-        token = getattr(settings, 'TARGET_API_TOKEN', 'dummy_token')
-        headers = {
-            'Authorization': f'Token {token}'
-        }
-
+        # Kirim data ke API teman Anda
         try:
-            if file:
-                # Kirim sebagai multipart form jika ada file
-                multipart_data = data.copy()
-                files = {'file': (file.name, file.read(), file.content_type)}
+            teman_api_url = settings.TEMAN_API_URL
+            requests.post(url=teman_api_url, json=reply_data, timeout=10).raise_for_status()
+            return redirect('inbox')
+        except RequestException as e:
+            # Jika gagal, kembali ke halaman reply dengan pesan error
+            error_message = f"Gagal mengirim balasan: {e}"
+            context = {
+                'message': message_to_reply,
+                'default_message': message_text, # Tampilkan teks yang gagal dikirim
+                'error_message': error_message
+            }
+            return render(request, 'reply_message.html', context)
 
-                response = requests.post(
-                    url='https://data.factiven.me/api/receive-message/',
-                    data=multipart_data,
-                    files=files,
-                    headers=headers,
-                    timeout=10
-                )
-            else:
-                # Kirim sebagai JSON jika tanpa file
-                headers['Content-Type'] = 'application/json'
-                response = requests.post(
-                    url='https://data.factiven.me/api/receive-message/',
-                    data=json.dumps(data),
-                    headers=headers,
-                    timeout=10
-                )
-
-            if response.status_code == 201:
-                return redirect('inbox')  # Ganti sesuai URL-mu
-            else:
-                return render(request, 'reply_message.html', {
-                    'message': message,
-                    'form_errors': f'Gagal mengirim. Status: {response.status_code}, Respon: {response.text}'
-                })
-
-        except requests.exceptions.RequestException as e:
-            return render(request, 'reply_message.html', {
-                'message': message,
-                'form_errors': f'Koneksi gagal: {str(e)}'
-            })
-
-    return render(request, 'reply_message.html', {'message': message})
+    context = {
+        'message': message_to_reply,
+        'default_message': default_text
+    }
+    return render(request, 'reply_message.html', context)

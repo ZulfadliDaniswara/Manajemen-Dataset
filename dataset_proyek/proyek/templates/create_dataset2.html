@@ -3,186 +3,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Dataset (Step 2) - DigiBox</title>
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
       color: #000;
-      line-height: 1.6;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
+    main {
+      flex: 1;
     }
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .container {
+      width: 96%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .logo-icon {
-      height: 70px;
-    }
+    .site-header { padding-top: 15px; padding-bottom: 15px; }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; text-decoration: none; }
+    .logo-icon { height: 90px; margin-right: 10px; }
+    .logo-text { font-size: 30px; font-weight: bold; color: white; }
+    .header-right { display: flex; align-items: center; }
+    .profile-icon { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; margin-left: 10px; object-fit: cover; transition: transform 0.2s ease; }
+    .profile-icon:hover { transform: scale(1.05); }
 
-    .logo-text {
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .search-profile {
-      display: flex;
-      align-items: center;
-    }
-
-    .profile-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      cursor: pointer;
-      padding: 5px;
-    }
-
-    main.form-container {
+   
+    .form-container {
       max-width: 700px;
-      margin: 40px auto;
-      padding: 0 30px;
-      text-align: center;
-      flex-grow: 1;
-    }
-
-    .form-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #002a5c;
-      margin-bottom: 10px;
-    }
-
-    .form-subtitle {
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 30px;
-    }
-
-    .dataset-form {
-      text-align: left;
-    }
-
-    .dataset-form label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: bold;
-    }
-
-    .dataset-form input[type="text"] {
-      width: 100%;
-      padding: 14px 18px;
+      margin: 2rem auto;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 2rem 2.5rem;
       border-radius: 20px;
-      border: 1px solid #aaa;
-      background-color: #f2f2f2;
-      font-size: 14px;
-      color: #333;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
+    .form-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-header h1 {
+      color: #002c3e;
+      margin-bottom: 0.5rem;
+      font-size: 28px;
+    }
+
+    .form-header p {
+      font-size: 1rem;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #002c3e;
+      font-size: 15px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="file"],
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #b2c5c6;
+      background-color: white;
+      font-size: 14px;
+      color: #333;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #80c3c7;
+      box-shadow: 0 0 0 3px rgba(128, 195, 199, 0.5);
+    }
+    
     .button-group {
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
-      margin-top: 30px;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #dceaea;
     }
-
-    .btn-back, .btn-next {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #0b0b38;
-      border-radius: 20px;
-      color: white;
-      cursor: pointer;
+    
+    .btn {
+      padding: 10px 25px;
       border: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-back:hover, .btn-next:hover {
-      background-color: #1c1c5c;
-    }
-
-    .footer {
-      background-color: #0b0b38;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      margin-top: 50px;
-    }
-
-    .footer-text {
-      font-size: 14px;
+      border-radius: 50px;
+      font-size: 15px;
       font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .footer-link {
       color: white;
       text-decoration: none;
-      font-size: 14px;
-      transition: color 0.3s ease;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
     }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    .btn-primary { background-color: #0b0b38; } 
+    .btn-cancel { background-color: #a0aec0; } 
+    
 
-    .footer-link:hover {
-      color: #90c3c3;
-      text-decoration: underline;
-    }
+    .site-footer { background-color: #0b0b38; color: white; margin-top: 40px; padding-top: 25px; padding-bottom: 25px; }
+    .footer-content { text-align: center; }
+    .footer-logo { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+    .footer-link { color: white; font-size: 13px; text-decoration: none; }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
-    </div>
-    <div class="search-profile">
-      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon">
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+      </div>
     </div>
   </header>
-
-  <main class="form-container">
-    <h2 class="form-title">Informasi Lanjutan Dataset</h2>
-    <p class="form-subtitle">Isi informasi tambahan yang dibutuhkan untuk mendeskripsikan dataset Anda secara menyeluruh.</p>
-
-    <form class="dataset-form" method="post">
-      {% csrf_token %}
-
-      <label for="creator">Nama Pembuat Dataset</label>
-      <input type="text" id="creator" name="creator_name" placeholder="Nama Pembuat" required>
-
-      <label for="verifier">Nama Pemverifikasi</label>
-      <input type="text" id="verifier" name="verifier_name" placeholder="Nama Pemverifikasi" required>
-
-      <div class="button-group">
-        <a href="{% url 'create_dataset' %}" class="btn-back">Back</a>
-        <button type="submit" name="next" class="btn-next">Next</button>
+  
+  <div id="profile-popup" class="popup-container popup-hidden">
+      <div class="popup-card">
+          <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+          <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+          <div class="popup-name">{{ request.user.username }}</div>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
       </div>
-    </form>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="form-container">
+        <div class="form-header">
+          <h1>Informasi Lanjutan Dataset</h1>
+          <p>Isi informasi tambahan yang dibutuhkan untuk mendeskripsikan dataset Anda secara menyeluruh.</p>
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="creator">Nama Pembuat Dataset</label>
+            <input type="text" id="creator" name="creator_name" placeholder="Nama Pembuat" required>
+          </div>
+
+          <div class="form-group">
+            <label for="verifier">Nama Pemverifikasi</label>
+            <input type="text" id="verifier" name="verifier_name" placeholder="Nama Pemverifikasi" required>
+          </div>
+
+          <div class="button-group">
+            <a href="{% url 'create_dataset' %}" class="btn btn-cancel">Kembali</a>
+            <button type="submit" name="next" class="btn btn-primary">Lanjutkan</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </main>
 
-  <footer class="footer">
-    <p class="footer-text">DigiBox</p>
-    <a href="#" class="footer-link">About us</a>
+  <footer class="site-footer">
+      <div class="container footer-content">
+          <div class="footer-logo">DigiBox</div>
+          <a href="#" class="footer-link">About us</a>
+      </div>
   </footer>
+
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+    function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+    document.addEventListener('click', function(event) { if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) { popup.classList.add('popup-hidden'); } });
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
 
 </body>
 </html>

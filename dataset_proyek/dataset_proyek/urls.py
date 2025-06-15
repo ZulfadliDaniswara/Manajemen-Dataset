@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('proyek.urls')),  # ← ini untuk menghubungkan urls dari app "proyek"
+    path('api/', include('proyek.urls')),
 ]
 
 # Tambahkan ini agar gambar bisa diload saat mode DEBUG

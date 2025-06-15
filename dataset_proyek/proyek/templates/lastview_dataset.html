@@ -5,221 +5,351 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DigiBox - Last View</title>
-    <style>
-    body {
+  <style>
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
-      color: #1e1e1e;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .header {
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .container {
+      width: 96%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-header {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
     }
 
     .logo-section {
       display: flex;
       align-items: center;
+      text-decoration: none;
     }
 
     .logo-icon {
-      width: 90px;
+      height: 90px;
       margin-right: 10px;
     }
 
     .logo-text {
-      font-size: 2.0rem;
-      color: white;
+      font-size: 30px;
       font-weight: bold;
+      color: white;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
     }
-
-    .search-section {
+    
+    .search-form {
       display: flex;
       align-items: center;
-      background: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 5px 10px;
     }
 
-    .search-section input {
+    .search-form input {
       border: none;
       outline: none;
-      font-size: 0.9rem;
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .search-submit-button {
       background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
     }
 
     .search-icon {
       width: 16px;
-      margin-left: 8px;
+      height: 16px;
+      margin-left: 5px;
+      display: block;
     }
 
-    .profile-icon img {
-      width: 45px;
+    .message-icon, .profile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       cursor: pointer;
+      margin-left: 10px;
+      object-fit: cover;
+      transition: transform 0.2s ease;
     }
 
-    .hero {
-      padding: 1rem 2rem;
+    .message-icon:hover, .profile-icon:hover {
+      transform: scale(1.05);
     }
 
-    .hero h1 {
-      font-size: 1.6rem;
-      margin-bottom: 0.5rem;
+    .dataset-section {
+      padding-top: 20px;
+      padding-bottom: 20px;
     }
 
-    .hero p {
-      color: #333;
-      font-size: 0.95rem;
+    .section-header {
+      margin-bottom: 25px;
     }
 
-    .lastview-list {
-      padding: 0 2rem;
+    .section-header h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #002c3e;
     }
 
-    .lastview-list h2 {
-      margin-bottom: 1rem;
+    .dataset-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-
+    
     .dataset-card {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: #d7e9ec;
-      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.6);
       border-radius: 20px;
-      margin-bottom: 1.2rem;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .dataset-card img {
+    .dataset-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .dataset-card-img {
       width: 90px;
       height: 90px;
       object-fit: cover;
       border-radius: 15px;
+      margin-right: 1.2rem;
+      flex-shrink: 0;
+    }
+    
+    .dataset-card-info {
+      flex-grow: 1;
+    }
+    
+    .dataset-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #002c3e;
+      margin-bottom: 5px;
     }
 
-    .dataset-title {
-      flex-grow: 1;
+    .dataset-card-desc {
+        font-size: 0.9rem;
+        color: #333;
+    }
+
+    .dataset-card-actions {
       margin-left: 1rem;
-      font-weight: 600;
-      font-size: 1rem;
     }
 
     .view-button {
-      padding: 0.5rem 1.4rem;
-      background-color: #2f2f35;
+      background-color: #0b0b38;
       color: white;
       border: none;
-      border-radius: 20px;
-      font-size: 0.9rem;
+      border-radius: 50px;
+      padding: 8px 22px;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
     }
 
     .view-button:hover {
-      background-color: #444;
+      background-color: #1c1c5c;
+    }
+    
+    .site-footer {
+      background-color: #0b0b38;
+      color: white;
+      margin-top: 40px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+    
+    .footer-content {
+      text-align: center;
     }
 
-    .footer {
-      background-color: #0a0a32;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-      margin-top: 3rem;
+    .footer-logo {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
     }
 
     .footer-link {
-      color: #ccc;
+      color: white;
+      font-size: 13px;
       text-decoration: none;
-      font-size: 0.85rem;
     }
+
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
 
     @media screen and (max-width: 600px) {
       .dataset-card {
         flex-direction: column;
         align-items: flex-start;
       }
-
-      .dataset-title {
-        margin-left: 0;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
+      .dataset-card-img {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        width: 100%;
+        height: 150px;
       }
-
+      .dataset-card-actions {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100%;
+      }
       .view-button {
-        align-self: flex-end;
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
-    </div>
-
-    <div class="header-right">
-      <div class="search-section">
-        <input type="text" placeholder="Search" />
-        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+    <header class="site-header">
+      <div class="container header-content">
+        <a href="{% url 'homepage' %}" class="logo-section">
+          <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+          <span class="logo-text">DigiBox</span>
+        </a>
+        <div class="header-right">
+          <form method="GET" action="{% url 'search_results' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search" />
+            <button type="submit" class="search-submit-button">
+              <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+            </button>
+          </form>
+          <a href="{% url 'inbox' %}" title="Pesan Masuk">
+            <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
+          </a>
+          <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+        </div>
       </div>
-      <div class="profile-icon">
-        <img src="{% static 'images/profile.png' %}" alt="User" />
+    </header>
+
+    <div id="profile-popup" class="popup-container popup-hidden">
+        <div class="popup-card">
+            <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+            <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+            <div class="popup-name">{{ request.user.username }}</div>
+            <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+            <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+        </div>
+    </div>
+
+        <main>
+      <div class="container">
+        <section class="dataset-section">
+          <div class="section-header">
+            <h1>Riwayat Terakhir Dilihat</h1>
+          </div>
+
+          <div class="dataset-list">
+            <div class="dataset-card">
+              <img src="{% static 'images/ferrari.jpg' %}" alt="Racer car" class="dataset-card-img">
+              <div class="dataset-card-info">
+                <div class="dataset-card-title">Racer car</div>
+                <p class="dataset-card-desc">Kumpulan data gambar mobil balap dari berbagai seri.</p>
+              </div>
+              <div class="dataset-card-actions">
+                <a href="#" class="view-button">View</a>
+              </div>
+            </div>
+
+            <div class="dataset-card">
+              <img src="{% static 'images/tifomu.jpg' %}" alt="Football League" class="dataset-card-img">
+              <div class="dataset-card-info">
+                <div class="dataset-card-title">Football League</div>
+                <p class="dataset-card-desc">Statistik pertandingan dari liga-liga top Eropa.</p>
+              </div>
+              <div class="dataset-card-actions">
+                <a href="#" class="view-button">View</a>
+              </div>
+            </div>
+
+            <div class="dataset-card">
+              <img src="{% static 'images/ultinolan.jpg' %}" alt="Blockchain" class="dataset-card-img">
+              <div class="dataset-card-info">
+                <div class="dataset-card-title">Blockchain</div>
+                <p class="dataset-card-desc">Data transaksi dan blok dari jaringan Ethereum.</p>
+              </div>
+              <div class="dataset-card-actions">
+                <a href="#" class="view-button">View</a>
+              </div>
+            </div>
+
+            <div class="dataset-card">
+              <img src="{% static 'images/lego.jpg' %}" alt="Lego" class="dataset-card-img">
+              <div class="dataset-card-info">
+                <div class="dataset-card-title">Lego</div>
+                <p class="dataset-card-desc">Informasi set, tema, dan part dari mainan Lego.</p>
+              </div>
+              <div class="dataset-card-actions">
+                <a href="#" class="view-button">View</a>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
-  </header>
+    </main>
 
-  <!-- Hero Text -->
-  <section class="hero">
-    <h1>Jejak Perubahan Dataset</h1>
-    <p>"Pantau semua perubahan yang terjadi pada dataset Anda. Lihat riwayat unggahan, pembaruan, dan modifikasi yang telah dilakukan."</p>
-  </section>
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-logo">DigiBox</div>
+            <a href="#" class="footer-link">About us</a>
+        </div>
+    </footer>
 
-  <!-- Last View Section -->
-  <section class="lastview-list">
-    <h2>Last View</h2>
-
-    <div class="dataset-card">
-      <img src="{% static 'images/ferrari.jpg' %}" alt="Racer car">
-      <span class="dataset-title">Racer car</span>
-      <button class="view-button">View</button>
-    </div>
-
-    <div class="dataset-card">
-      <img src="{% static 'images/tifomu.jpg' %}" alt="Football League">
-      <span class="dataset-title">Football League</span>
-      <button class="view-button">View</button>
-    </div>
-
-    <div class="dataset-card">
-      <img src="{% static 'images/ultinolan.jpg' %}" alt="ultinolan">
-      <span class="dataset-title">Blockchain</span>
-      <button class="view-button">View</button>
-    </div>
-
-    <div class="dataset-card">
-      <img src="{% static 'images/lego.jpg' %}" alt="lego">
-      <span class="dataset-title">lego</span>
-      <button class="view-button">View</button>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-logo">DigiBox</div>
-    <a href="#" class="footer-link">About us</a>
-  </footer>
-
+    <script>
+      const popup = document.getElementById('profile-popup');
+      const profileIcon = document.querySelector('.profile-icon');
+      function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+      document.addEventListener('click', function(event) {
+        if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) {
+          popup.classList.add('popup-hidden');
+        }
+      });
+      document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+    </script>
 </body>
 </html>

@@ -3,248 +3,208 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Your Dataset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Dataset - DigiBox</title>
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
     }
 
     body {
-      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
-      min-height: 100vh;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+      color: #000;
       display: flex;
       flex-direction: column;
-      color: #1e1e1e;
+      min-height: 100vh;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-icon {
-      width: 90px;
-      margin-right: 10px;
-    }
-
-    .logo-text {
-      font-size: 2.0rem;
-      color: white;
-      font-weight: bold;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .search-section {
-      display: flex;
-      align-items: center;
-      background: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
-    }
-
-    .search-section input {
-      border: none;
-      outline: none;
-      font-size: 0.9rem;
-      background: none;
-    }
-
-    .search-icon {
-      width: 16px;
-      margin-left: 8px;
-    }
-
-    .profile-icon {
-      width: 45px;
-      cursor: pointer;
-    }
-
-    .content {
-      padding: 2rem;
-      flex-grow: 1;
-    }
-
-    .title {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-      color: #1e1e1e;
-    }
-
-    .subtitle {
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-
-    .dataset-card {
-      background: #d7e9ec;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem;
-      border-radius: 20px;
-      margin-bottom: 1.2rem;
-    }
-
-    .dataset-image {
-      width: 90px;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 15px;
-    }
-
-    .dataset-info {
+    main {
       flex: 1;
-      margin-left: 1rem;
     }
 
-    .dataset-info h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
+    .container {
+      width: 96%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .dataset-updated {
-      font-size: 0.85rem;
-      color: #555;
-    }
+    .site-header { padding-top: 15px; padding-bottom: 15px; }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; text-decoration: none; }
+    .logo-icon { height: 90px; margin-right: 10px; }
+    .logo-text { font-size: 30px; font-weight: bold; color: white; }
+    .header-right { display: flex; align-items: center; }
+    .search-form { display: flex; align-items: center; background-color: white; border-radius: 20px; padding: 5px 10px; }
+    .search-form input { border: none; outline: none; background: transparent; font-size: 14px; }
+    .search-submit-button { background: none; border: none; padding: 0; cursor: pointer; }
+    .search-icon { width: 16px; height: 16px; margin-left: 5px; display: block; }
+    .message-icon, .profile-icon { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; margin-left: 10px; object-fit: cover; transition: transform 0.2s ease; }
+    .message-icon:hover, .profile-icon:hover { transform: scale(1.05); }
 
-    .dataset-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
+    .dataset-section { padding-top: 20px; padding-bottom: 20px; }
+    .section-header { margin-bottom: 25px; }
+    .section-header h1 { font-size: 28px; font-weight: bold; color: #002c3e; margin-bottom: 5px; }
+    .section-header p { font-size: 1rem; color: #333; max-width: 600px; }
 
-    .dataset-actions a {
-      padding: 1rem 1.5rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
+    
+    .dataset-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;}
+    .dataset-card { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.6); border-radius: 20px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .dataset-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .dataset-card-img { width: 90px; height: 90px; object-fit: cover; border-radius: 15px; margin-right: 1.2rem; flex-shrink: 0; }
+    .dataset-card-info { flex-grow: 1; }
+    .dataset-card-title { font-size: 1.1rem; font-weight: 600; color: #002c3e; margin-bottom: 5px; }
+    .dataset-card-meta { font-size: 0.85rem; color: #555; }
+    .dataset-card-actions { margin-left: 1rem; display: flex; gap: 0.7rem; }
+
+    .btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .btn:hover {
+      opacity: 0.85;
+    }
+    .btn-edit { background-color: #319795; } 
+    .btn-view { background-color: #0b0b38; } 
+    .btn-delete { background-color: #c53030; } 
+    
+    .flash-messages {
+      margin-bottom: 1.5rem;
+      list-style: none;
+    }
+    .flash-message {
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid transparent;
       font-weight: 500;
-      color: white;
-      text-decoration: none;
+    }
+    .flash-message.success {
+      background-color: #c6f6d5;
+      border-color: #9ae6b4;
+      color: #22543d;
+    }
+    .flash-message.error {
+      background-color: #fed7d7;
+      border-color: #feb2b2;
+      color: #822727;
     }
 
-    .edit-btn { background-color: #2c7a7b; }
-    .delete-btn { background-color: #e53e3e; }
-    .view-btn { background-color: #1a202c; }
-
-    .empty-message {
-      font-size: 0.95rem;
-      color: #333;
-      margin-top: 1.5rem;
-    }
-
-    .footer {
-      background-color: #0a0a32;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-      margin-top: 3rem;
-    }
-
-    .footer a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 0.85rem;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media screen and (max-width: 600px) {
-      .dataset-card {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .dataset-info {
-        margin-left: 0;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .dataset-actions {
-        flex-direction: column;
-        align-self: flex-end;
-      }
-    }
+    .site-footer { background-color: #0b0b38; color: white; margin-top: 40px; padding-top: 25px; padding-bottom: 25px; }
+    .footer-content { text-align: center; }
+    .footer-logo { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+    .footer-link { color: white; font-size: 13px; text-decoration: none; }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
-    </div>
-
-    <div class="header-right">
-      <div class="search-section">
-        <input type="text" placeholder="Search" />
-        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <form method="GET" action="{% url 'search_results' %}" class="search-form">
+          <input type="text" name="q" placeholder="Search" />
+          <button type="submit" class="search-submit-button">
+            <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+          </button>
+        </form>
+        <a href="{% url 'inbox' %}" title="Pesan Masuk">
+          <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
+        </a>
+        <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
       </div>
-      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
     </div>
   </header>
-
-  <main class="content">
-    <h2 class="title">Dataset Saya</h2>
-    <p class="subtitle">Kelola dataset yang telah Anda buat atau unggah. Lihat detail, edit, atau analisis data dengan mudah.</p>
-
-    {% if datasets %}
-      {% for dataset in datasets %}
-      <div class="dataset-card">
-        <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-image">
-        <div class="dataset-info">
-          <h3>{{ dataset.title }}</h3>
-          <p class="dataset-updated">
-            {% if dataset.created_at %}
-              Update terakhir: {{ dataset.created_at|timesince }} yang lalu
-            {% else %}
-              New
-            {% endif %}
-          </p>
-        </div>
-        <div class="dataset-actions">
-          <a href="{% url 'edit_dataset' dataset.id %}" class="edit-btn">Edit</a>
-          <a href="{% url 'view_dataset' dataset.id %}" class="view-btn">View</a>
-          <a href="{% url 'delete_dataset' dataset.id %}" class="delete-btn">Delete</a>
-        </div>
+  
+  <div id="profile-popup" class="popup-container popup-hidden">
+      <div class="popup-card">
+          <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+          <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+          <div class="popup-name">{{ request.user.username }}</div>
+          <a href="{% url 'homepage' %}" class="popup-link"> Homepage</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
       </div>
-      {% endfor %}
-    {% else %}
-      <p class="empty-message">Belum ada dataset. Silakan buat satu!</p>
-    {% endif %}
+  </div>
+
+  <main>
+    <div class="container">
+      <section class="dataset-section">
+        <div class="section-header">
+          <h1>Dataset Saya</h1>
+          <p>Kelola dataset yang telah Anda buat atau unggah. Lihat detail, edit, atau analisis data dengan mudah.</p>
+        </div>
 
         {% if messages %}
-          <div class="message-container">
-        {% for message in messages %}
-          <div class="message">{{ message }}</div>
-        {% endfor %}
-          </div>
+          <ul class="flash-messages">
+            {% for message in messages %}
+              <li class="flash-message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
         {% endif %}
+
+        <div class="dataset-list">
+          {% if datasets %}
+            {% for dataset in datasets %}
+            <div class="dataset-card">
+              <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-card-img">
+              <div class="dataset-card-info">
+                <div class="dataset-card-title">{{ dataset.title }}</div>
+                <p class="dataset-card-meta">
+                  {% if dataset.created_at %}
+                    Update terakhir: {{ dataset.created_at|timesince }} yang lalu
+                  {% else %}
+                    Baru saja dibuat
+                  {% endif %}
+                </p>
+              </div>
+              <div class="dataset-card-actions">
+                <a href="{% url 'edit_dataset' dataset.id %}" class="btn btn-edit">Edit</a>
+                <a href="{% url 'view_dataset' dataset.id %}" class="btn btn-view">View</a>
+                <a href="{% url 'delete_dataset' dataset.id %}" class="btn btn-delete">Delete</a>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p>Belum ada dataset. Silakan buat satu!</p>
+          {% endif %}
+        </div>
+      </section>
+    </div>
   </main>
 
-  <footer class="footer">
-    <div>DigiBox</div>
-    <a href="#">About us</a>
+  <footer class="site-footer">
+      <div class="container footer-content">
+          <div class="footer-logo">DigiBox</div>
+          <a href="#" class="footer-link">About us</a>
+      </div>
   </footer>
+
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+    function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+    document.addEventListener('click', function(event) { if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) { popup.classList.add('popup-hidden'); } });
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
 
 </body>
 </html>

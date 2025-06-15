@@ -2,129 +2,204 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigiBox</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to bottom, #7ea7a6, #d1e0e0);
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigiBox</title>
+  <style>
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-        }
+  * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-        }
+     body {
+     font-family: 'Arial', sans-serif;
+     background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+     color: #000;
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+     }
 
-        .logo img {
-            width: 110px;
-            margin-right: 3px;
-        }
+     main {
+     flex: 1;
+     }
 
-        .login-btn {
-            padding: 10px 20px;
-            background: #121348;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
+     .container {
+     width: 96%;
+    max-width: 1920px;
+     margin-left: auto;
+     margin-right: auto;   
+     }
 
-        .login-btn:hover {
-            background: #0e0f35;
-        }
+     .site-header {
+     padding-top: 15px;
+     padding-bottom: 15px;
+     }
 
-        .container {
-            padding: 50px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
+     .header-content {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     }
 
-        .container h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+     .logo-section {
+     display: flex;
+     align-items: center;
+     text-decoration: none; 
+     }
 
-        .container p {
-            font-size: 16px;
-            margin-bottom: 40px;
-            color: #222;
-        }
+     .logo-icon {
+     height: 90px;
+     margin-right: 10px;
+     }
 
-        .feature-box {
-            background: rgba(255, 255, 255, 0.3);
-            padding: 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-            margin: 15px auto;
-            font-size: 18px;
-            font-weight: 500;
-            color: #333;
-            max-width: 600px;
-        }
+     .logo-text {
+     font-size: 30px;
+     font-weight: bold;
+     color: white;
+     }
 
-        .footer {
-            background: #121348;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            margin-top: 60px;
-        }
+     .header-right {
+     display: flex;
+     align-items: center;
+     }
+ 
+    .header-login-btn {
+        background-color: #0b0b38; 
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background-color 0.2s ease;
+    }
+    .header-login-btn:hover {
+        background-color: #1c1c5c;
+    }
 
-        .footer h2 {
-            margin-bottom: 5px;
-            font-size: 20px;
-        }
+     .hero {
+     padding-top: 60px;
+     padding-bottom: 40px;
+     text-align: center;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     }
 
-        .footer p {
-            margin: 0;
-            font-size: 14px;
-            color: #ccc;
+     .hero h1 {
+     font-size: 28px;
+     font-weight: bold;
+     color: #004050;
+     margin-bottom: 8px;
+     }
+
+     .hero p {
+     font-size: 16px;
+     max-width: 600px;
+     color: #333;
+     margin-bottom: 20px;
+     line-height: 1.6;
+     }
+
+    /* Gaya baru untuk daftar fitur agar konsisten */
+    .feature-grid {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: 1fr; /* Satu kolom di mobile */
+        gap: 15px;
+        width: 100%;
+        max-width: 700px; /* Batasi lebar agar mudah dibaca */
+    }
+
+    .feature-box {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        padding: 15px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        color: #002c3e;
+        font-weight: 500;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Media query untuk tampilan desktop */
+    @media (min-width: 768px) {
+        .feature-grid {
+            grid-template-columns: 1fr 1fr; /* Dua kolom di desktop */
         }
-    </style>
+    }
+
+     .site-footer {
+     background-color: #0b0b38;
+     color: white;
+     margin-top: 40px;
+     padding-top: 25px;
+     padding-bottom: 25px;
+     }
+ 
+     .footer-content {
+     text-align: center;
+    }
+
+     .footer-logo {
+     font-weight: bold;
+     font-size: 16px;
+     margin-bottom: 5px;
+     }
+
+    .footer-link {
+     color: white;
+     font-size: 13px;
+     text-decoration: none;
+     }
+
+    .footer-link:hover {
+     text-decoration: underline;
+     }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <img src="{% static 'images/logodigi.png' %}" alt="Logo DigiBox">
-            <span>DigiBox</span>
-        </div>
-        <button class="login-btn" onclick="window.location.href='/login/'">Login</button>
-    </header>
 
-    <div class="container">
-        <h2>Kelola Dataset Anda dengan Lebih Efisien</h2>
-        <p>Aplikasi ini membantu Anda mengelola dataset dengan mudah. Unggah, analisis, dan pantau perubahan dataset dalam satu platform yang intuitif.</p>
-
-        <div class="feature-box">Buat tabel dataset sesuai dengan definisi data di aplikasi Intelligence Creation.</div>
-        <div class="feature-box">Unggah data yang dibutuhkan untuk pemodelan sistem cerdas.</div>
-        <div class="feature-box">Tampilkan statistik deskriptif dan kualitas data.</div>
-        <div class="feature-box">Catat perubahan dataset setelah pemrosesan data.</div>
-        <div class="feature-box">Lacak proyek yang menggunakan dataset ini.</div>
+     <header class="site-header">
+    <div class="container header-content">
+      <a href="/" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <button class="header-login-btn" onclick="window.location.href='/login/'">Login</button>
+      </div>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <h2>DigiBox</h2>
-        <p>About Us</p>
-    </footer>
+  <main>
+    <div class="container">
+      <section class="hero">
+        <h1>Kelola Dataset Anda dengan Lebih Efisien</h1>
+        <p>Aplikasi ini membantu Anda mengelola dataset dengan mudah. Unggah, analisis, dan pantau perubahan dataset dalam satu platform yang intuitif.</p>
+        
+        <div class="feature-grid">
+          <div class="feature-box">Buat tabel dataset sesuai definisi data</div>
+          <div class="feature-box">Unggah data untuk pemodelan</div>
+          <div class="feature-box">Tampilkan statistik deskriptif & kualitas data</div>
+          <div class="feature-box">Catat perubahan setelah pemrosesan data</div>
+          <div class="feature-box">Lacak proyek yang menggunakan dataset</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+      <div class="container footer-content">
+        <div class="footer-logo">DigiBox</div>
+        <a href="" class="footer-link">About us</a>
+      </div>
+  </footer>
+
 </body>
 </html>

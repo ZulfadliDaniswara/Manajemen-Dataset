@@ -3,94 +3,96 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inbox - DigiBox</title>
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
     }
 
     body {
-      background: linear-gradient(to bottom, #9ad0d3, #cde4e6);
-      min-height: 100vh;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
+      color: #000;
       display: flex;
       flex-direction: column;
-      color: #1e1e1e;
+      min-height: 100vh;
     }
 
-    .header {
+    main {
+      flex: 1;
+    }
+
+    .container {
+      width: 96%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-header {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
     }
 
     .logo-section {
       display: flex;
       align-items: center;
+      text-decoration: none;
     }
 
     .logo-icon {
-      width: 90px;
+      height: 90px;
       margin-right: 10px;
     }
 
     .logo-text {
-      font-size: 2.0rem;
-      color: white;
+      font-size: 30px;
       font-weight: bold;
+      color: white;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-    }
-
-    .search-section {
-      display: flex;
-      align-items: center;
-      background: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
-    }
-
-    .search-section input {
-      border: none;
-      outline: none;
-      font-size: 0.9rem;
-      background: none;
-    }
-
-    .search-icon {
-      width: 16px;
-      margin-left: 8px;
     }
 
     .profile-icon {
-      width: 45px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       cursor: pointer;
+      margin-left: 10px;
+      object-fit: cover;
+      transition: transform 0.2s ease;
     }
 
-    .main-content {
-      flex: 1;
-      padding: 2rem;
+    .profile-icon:hover {
+      transform: scale(1.05);
     }
 
-    .title {
-      font-size: 1.6rem;
+    .section-header {
+      margin-bottom: 25px;
+    }
+
+    .section-header h1 {
+      font-size: 28px;
       font-weight: bold;
-      margin-bottom: 0.5rem;
-      color: #1e1e1e;
+      color: #002c3e;
     }
 
     .inbox-container {
-      margin-top: 1.5rem;
-      background: #d7e9ec;
-      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 20px;
+      padding: 1.5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
@@ -104,88 +106,134 @@
       align-items: center;
     }
 
+    .message-card:last-child {
+        margin-bottom: 0; 
+    }
+
     .message-title {
       font-weight: bold;
       font-size: 1rem;
+      color: #333;
     }
 
     .buttons .btn {
-      background-color: #1a202c;
+      background-color: #0b0b38; 
       color: white;
       padding: 8px 16px;
       margin-left: 10px;
       border-radius: 20px;
       text-decoration: none;
       font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+    .buttons .btn:hover {
+      background-color: #1c1c5c;
     }
 
     .no-message {
       font-style: italic;
       color: #555;
     }
-
-    .footer {
-      background-color: #0a0a32;
+    
+    .site-footer {
+      background-color: #0b0b38;
       color: white;
+      margin-top: 40px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+    
+    .footer-content {
       text-align: center;
-      padding: 1rem 0;
-      font-size: 0.85rem;
-      margin-top: auto;
     }
 
-    .footer a {
-      color: #ccc;
+    .footer-logo {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .footer-link {
+      color: white;
+      font-size: 13px;
       text-decoration: none;
     }
 
-    .footer a:hover {
-      text-decoration: underline;
-    }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo-section">
-      <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-      <span class="logo-text">DigiBox</span>
-    </div>
-    <div class="header-right">
-      <div class="search-section">
-        <input type="text" placeholder="Search" />
-        <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
+    <header class="site-header">
+    <div class="container header-content">
+      <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
       </div>
-      <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
     </div>
   </header>
+  
+  <div id="profile-popup" class="popup-container popup-hidden">
+      <div class="popup-card">
+          <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+          <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+          <div class="popup-name">{{ request.user.username }}</div>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+      </div>
+  </div>
 
-  <!-- Main -->
-  <main class="main-content">
-    <h2 class="title">Dataset Requests</h2>
 
-    <div class="inbox-container">
-      {% if messages %}
-        {% for message in messages %}
-          <div class="message-card">
-            <span class="message-title">{{ message.project_name }}</span>
-            <div class="buttons">
-              <a href="{% url 'view_message' message.id %}" class="btn">View Details</a>
-              <a href="{% url 'reply_message' message.id %}" class="btn">Reply</a>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p class="no-message">Belum ada pesan yang diterima</p>
-      {% endif %}
+    <main>
+    <div class="container">
+        <div class="section-header">
+            <h1>Dataset Requests</h1>
+        </div>
+
+        <div class="inbox-container">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="message-card">
+                <span class="message-title">{{ message.project_name }}</span>
+                <div class="buttons">
+                    <a href="{% url 'view_message' message.id %}" class="btn">View Details</a>
+                    <a href="{% url 'reply_message' message.id %}" class="btn">Reply</a>
+                </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            <p class="no-message">Belum ada pesan yang diterima</p>
+            {% endif %}
+        </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div>DigiBox</div>
-    <a href="#">About us</a>
+    <footer class="site-footer">
+      <div class="container footer-content">
+          <div class="footer-logo">DigiBox</div>
+          <a href="#" class="footer-link">About us</a>
+      </div>
   </footer>
-
+  
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+    function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+    document.addEventListener('click', function(event) {
+      if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) {
+        popup.classList.add('popup-hidden');
+      }
+    });
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
 </body>
 </html>

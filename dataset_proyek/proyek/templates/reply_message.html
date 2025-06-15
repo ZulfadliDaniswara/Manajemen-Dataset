@@ -3,236 +3,211 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Isi Dataset dari Pesan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reply Message - DigiBox</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
     }
 
     body {
-      background: linear-gradient(to bottom, #90c3c3, #d9e6e6);
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #80c3c7 0%, #f0f8f9 100%);
       color: #000;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logo-icon {
-      height: 70px;
-    }
-
-    .logo-text {
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .profile-icon {
-      width: 45px;
-      cursor: pointer;
+      min-height: 100vh;
     }
 
     main {
-      max-width: 800px;
+      flex: 1;
+    }
+
+    .container {
+      width: 96%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-header { padding-top: 15px; padding-bottom: 15px; }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; text-decoration: none; }
+    .logo-icon { height: 90px; margin-right: 10px; }
+    .logo-text { font-size: 30px; font-weight: bold; color: white; }
+    .header-right { display: flex; align-items: center; }
+    
+    .profile-icon { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; margin-left: 10px; object-fit: cover; transition: transform 0.2s ease; }
+    .profile-icon:hover { transform: scale(1.05); }
+
+    .form-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 2rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-header h1 {
+      color: #002c3e;
+      margin-bottom: 0.5rem;
+      font-size: 28px;
+    }
+
+    .form-header p {
+      font-size: 1rem;
+      color: #333;
+      max-width: 600px;
       margin: 0 auto;
-      flex-grow: 1;
-      padding: 40px 20px;
-    }
-
-    h2 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    p.subtitle {
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: 30px;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 1rem;
     }
 
-    form label {
+    .form-group label {
       display: block;
-      margin: 15px 0 5px;
+      margin-bottom: 0.5rem;
       font-weight: bold;
+      color: #002c3e;
+      font-size: 15px;
     }
 
-    form input[type="text"],
-    form input[type="number"],
-    form input[type="date"],
-    form input[type="file"],
-    form textarea {
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="file"],
+    .form-group textarea {
       width: 100%;
       padding: 12px 16px;
-      border-radius: 20px;
-      border: none;
-      background-color: #dbeff0;
+      border-radius: 10px;
+      border: 1px solid #b2c5c6;
+      background-color: white;
       font-size: 14px;
-      color: #000;
+      color: #333;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-
-    form textarea {
+    
+    .form-group textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 150px; 
     }
 
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #80c3c7;
+      box-shadow: 0 0 0 3px rgba(128, 195, 199, 0.5);
+    }
+    
     .button-group {
       display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
+      justify-content: flex-end; /* Tombol di kanan */
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #dceaea;
     }
+    
+    .btn { padding: 10px 25px; border: none; border-radius: 50px; font-size: 15px; font-weight: bold; color: white; text-decoration: none; cursor: pointer; transition: opacity 0.2s ease; }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background-color: #319795; } /* Teal */
+    .btn-cancel { background-color: #a0aec0; } /* Gray */
 
-    .btn {
-      padding: 10px 25px;
-      border-radius: 25px;
-      border: none;
-      background-color: #1a202c;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-    }
+    /* Sistem Notifikasi Pesan (Flash Messages) */
+    .flash-messages { margin-bottom: 1.5rem; list-style: none; }
+    .flash-message { padding: 1rem; border-radius: 10px; border: 1px solid transparent; font-weight: 500;}
+    .flash-message.error { background-color: #fed7d7; border-color: #feb2b2; color: #822727; }
 
-    .btn:hover {
-      background-color: #333;
-    }
-
-    .error-message {
-      color: red;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    footer {
-      background-color: #0a0a32;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.85rem;
-    }
-
-    footer a {
-      color: white;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
+    .site-footer { background-color: #0b0b38; color: white; margin-top: 40px; padding-top: 25px; padding-bottom: 25px; }
+    .footer-content { text-align: center; }
+    .footer-logo { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+    .footer-link { color: white; font-size: 13px; text-decoration: none; }
+    .popup-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .popup-card { position: relative; background: #f0f0f0; padding: 2rem; border-radius: 25px; text-align: center; width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+    .popup-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+    .popup-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+    .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
+    .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
+    .popup-hidden { display: none; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-section">
-    <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
-    <span class="logo-text">DigiBox</span>
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="{% url 'homepage' %}" class="logo-section">
+        <img src="{% static 'images/logodigi.png' %}" alt="DigiBox Logo" class="logo-icon">
+        <span class="logo-text">DigiBox</span>
+      </a>
+      <div class="header-right">
+        <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
+      </div>
+    </div>
+  </header>
+  
+  <div id="profile-popup" class="popup-container popup-hidden">
+      <div class="popup-card">
+          <div class="popup-close" onclick="toggleProfilePopup()">x</div>
+          <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
+          <div class="popup-name">{{ request.user.username }}</div>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+      </div>
   </div>
-  <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" />
-</header>
 
 <main>
-  <h2>Mulai Proyek Anda dengan Dataset Baru</h2>
-  <p class="subtitle">
-    Buat dataset baru untuk dianalisis, dibagikan, atau digunakan dalam model Anda dengan mudah dan efisien sesuai dengan kebutuhan anda.
-  </p>
+  <div class="container">
+    <div class="form-container">
+      <div class="form-header">
+        <h1>Balas Pesan</h1>
+        <p>Kirimkan balasan bahwa dataset telah berhasil dibuat dan tersedia di platform Anda.</p>
+      </div>
+      
+      {% if error_message %}
+        <ul class="flash-messages">
+            <li class="flash-message error">{{ error_message }}</li>
+        </ul>
+      {% endif %}
 
-  {% if form_errors %}
-    <p class="error-message">{{ form_errors }}</p>
-  {% endif %}
+      <form method="post">
+        {% csrf_token %}
 
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    <div class="form-group">
-      <label for="project_name">1. Project Name</label>
-      <input type="text" id="project_name" name="project_name" value="{{ message.project_name|default:'' }}">
+        <div class="form-group">
+          <label for="reply_message">Pesan Balasan</label>
+          <textarea id="reply_message" name="message_text" rows="5">{{ default_message }}</textarea>
+        </div>
+
+        <div class="button-group">
+          <a href="{% url 'inbox' %}" class="btn btn-cancel">Kembali</a>
+          <button type="submit" class="btn btn-primary">Kirim</button>
+        </div>
+      </form>
     </div>
-
-    <div class="form-group">
-      <label for="description">2. Description Problem</label>
-      <textarea id="description" name="description">{{ message.description|default:'' }}</textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="target">3. Target</label>
-      <input type="text" id="target" name="target" value="{{ message.target|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="type_data">4. Type Data</label>
-      <input type="text" id="type_data" name="type_data" value="{{ message.type_data|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="processing">5. Aktivitas Pemrosesan Data</label>
-      <input type="text" id="processing" name="processing" value="{{ message.processing|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="num_features">6. Jumlah Fitur</label>
-      <input type="number" id="num_features" name="num_features" value="{{ message.num_features|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="dataset_size">7. Ukuran Dataset</label>
-      <input type="text" id="dataset_size" name="dataset_size" value="{{ message.dataset_size|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="format_file">8. Format File</label>
-      <input type="text" id="format_file" name="format_file" value="{{ message.format_file|default:'' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="start_date">9. Start Date</label>
-      <input type="date" id="start_date" name="start_date" value="{{ message.start_date|date:'Y-m-d' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="end_date">10. End Date</label>
-      <input type="date" id="end_date" name="end_date" value="{{ message.end_date|date:'Y-m-d' }}">
-    </div>
-
-    <div class="form-group">
-      <label for="file">11. File Dataset (CSV)</label>
-      <input type="file" id="file" name="file" accept=".csv">
-    </div>
-
-    <div class="button-group">
-      <a href="{% url 'inbox' %}" class="btn">Back</a>
-      <button type="submit" class="btn">Next</button>
-    </div>
-  </form>
+  </div>
 </main>
 
-<footer>
-  <div>DigiBox</div>
-  <a href="#">About us</a>
+<footer class="site-footer">
+    <div class="container footer-content">
+        <div class="footer-logo">DigiBox</div>
+        <a href="#" class="footer-link">About us</a>
+    </div>
 </footer>
+  
+  <script>
+    const popup = document.getElementById('profile-popup');
+    const profileIcon = document.querySelector('.profile-icon');
+    function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
+    document.addEventListener('click', function(event) { if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) { popup.classList.add('popup-hidden'); } });
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
 
 </body>
 </html>
