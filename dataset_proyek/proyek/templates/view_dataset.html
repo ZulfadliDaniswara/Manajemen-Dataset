@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ dataset.title }} - DigiBox</title>
   <style>
     /* ... Semua CSS Anda tetap sama ... */
@@ -135,40 +135,63 @@
       </div>
   </footer>
 
+  {{ activity_labels|json_script:"chart-labels-data" }}
+  {{ activity_data|json_script:"chart-values-data" }}
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <script>
-    // Ambil data JSON dari elemen script yang dibuat oleh Django
-    const labelsJSON = document.getElementById('chart-labels').textContent;
-    const dataJSON = document.getElementById('chart-data').textContent;
+    // Ambil elemen script dari halaman berdasarkan ID yang BENAR
+    const labelsElement = document.getElementById('chart-labels-data');
+    const dataElement = document.getElementById('chart-values-data');
 
-    // Ubah teks JSON menjadi array/objek JavaScript yang bisa digunakan
-    const labels = JSON.parse(labelsJSON);
-    const data = JSON.parse(dataJSON);
+    // Pastikan elemennya ada sebelum melanjutkan (praktik yang baik)
+    if (labelsElement && dataElement) {
+        // Ambil konten teks JSON dari dalam elemen tersebut
+        const labelsJSON = labelsElement.textContent;
+        const dataJSON = dataElement.textContent;
 
-    // Dapatkan elemen canvas
-    const ctx = document.getElementById('activityChart');
+        // Ubah teks JSON menjadi array/objek JavaScript yang bisa digunakan
+        const labels = JSON.parse(labelsJSON);
+        const data = JSON.parse(dataJSON);
 
-    // Buat grafik baru (kode ini tetap sama)
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Jumlah Download per Hari',
-                data: data,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        },
-        // ... options Anda tetap sama ...
-        options: {
-            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
-            plugins: { title: { display: true, text: 'Aktivitas Download Harian' } }
-        }
-    });
-</script>
+        // Dapatkan elemen canvas
+        const ctx = document.getElementById('activityChart');
+
+        // Buat grafik baru
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Jumlah Download per Hari',
+                    data: data,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { 
+                            precision: 0 
+                        } 
+                    } 
+                },
+                plugins: { 
+                    title: { 
+                        display: true, 
+                        text: 'Aktivitas Download Harian' 
+                    } 
+                }
+            }
+        });
+    } else {
+        console.error("Elemen data untuk grafik (chart-labels-data atau chart-values-data) tidak ditemukan di halaman. Pastikan tag json_script sudah benar di template Anda.");
+    }
+  </script>
 
   <script>
     // Script popup Anda yang sudah ada
