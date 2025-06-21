@@ -96,7 +96,7 @@
     }
     
     .form-group input[type="file"] {
-        padding: 8px; /* Padding khusus untuk file input agar lebih rapi */
+        padding: 8px;
     }
 
     .form-group input:focus,
@@ -141,8 +141,7 @@
     .btn-primary { background-color: #0b0b38; } 
     .btn-cancel { background-color: #a0aec0; } 
 
-    /* Sistem Notifikasi Pesan (Flash Messages) */
-    .flash-messages { margin-top: 1.5rem; list-style: none; }
+    .flash-messages { margin-top: 1.5rem; list-style: none; padding: 0; }
     .flash-message { padding: 1rem; border-radius: 10px; border: 1px solid transparent; font-weight: 500; margin-bottom: 1rem;}
     .flash-message.success { background-color: #c6f6d5; border-color: #9ae6b4; color: #22543d; }
     .flash-message.error { background-color: #fed7d7; border-color: #feb2b2; color: #822727; }
@@ -158,6 +157,77 @@
     .popup-link { display: block; margin: 12px 0; font-size: 1.1rem; text-decoration: none; color: #0077cc; font-weight: 500; }
     .popup-close { font-size: 24px; position: absolute; top: 15px; right: 20px; cursor: pointer; color: #555; }
     .popup-hidden { display: none; }
+    
+    /* --- TAMBAHAN CSS UNTUK FITUR KAMERA --- */
+    .image-input-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 5px;
+    }
+    .btn-camera {
+        padding: 8px 15px;
+        border: 1px solid #319795;
+        background-color: white;
+        color: #319795;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    .image-preview {
+        display: none;
+        max-width: 200px;
+        margin-top: 15px;
+        border-radius: 10px;
+        border: 2px solid #319795;
+    }
+    .modal-hidden {
+        display: none !important;
+    }
+    #camera-modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-content {
+        background-color: #fefefe;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+    }
+    .modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    #camera-feed {
+        background-color: #000;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    .btn-capture {
+        background-color: #0b0b38;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    /* --- AKHIR TAMBAHAN CSS --- */
   </style>
 </head>
 <body>
@@ -210,7 +280,12 @@
 
           <div class="form-group">
             <label for="image">2. Profil Dataset (Gambar)</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+            <div class="image-input-container">
+                <input type="file" id="image" name="image" accept="image/*" class="file-input" required>
+                <span>ATAU</span>
+                <button type="button" id="open-camera-btn" class="btn-camera">📸 Buka Kamera</button>
+            </div>
+            <img id="image-preview" src="#" alt="Pratinjau Gambar" class="image-preview"/>
           </div>
           
           <div class="form-group form-group-checkbox">
@@ -235,12 +310,84 @@
       </div>
   </footer>
   
+  <div id="camera-modal" class="modal-hidden">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Ambil Gambar dari Kamera</h2>
+        <video id="camera-feed" width="100%" autoplay></video>
+        <button type="button" id="capture-btn" class="btn-capture">Ambil Gambar</button>
+        <canvas id="photo-canvas" style="display:none;"></canvas>
+    </div>
+  </div>
+
   <script>
+    // Script popup Anda yang sudah ada
     const popup = document.getElementById('profile-popup');
     const profileIcon = document.querySelector('.profile-icon');
     function toggleProfilePopup() { popup.classList.toggle('popup-hidden'); }
     document.addEventListener('click', function(event) { if (!popup.classList.contains('popup-hidden') && !popup.contains(event.target) && !profileIcon.contains(event.target)) { popup.classList.add('popup-hidden'); } });
     document.addEventListener('keydown', function(event) { if (event.key === "Escape") { popup.classList.add('popup-hidden'); } });
+  </script>
+
+  <script>
+    const openCameraBtn = document.getElementById('open-camera-btn');
+    const captureBtn = document.getElementById('capture-btn');
+    const modal = document.getElementById('camera-modal');
+    const videoFeed = document.getElementById('camera-feed');
+    const canvas = document.getElementById('photo-canvas');
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('image-preview');
+    const closeModalBtn = document.querySelector('.modal-close');
+    let stream;
+
+    // Fungsi untuk membuka modal dan menyalakan kamera
+    openCameraBtn.addEventListener('click', async () => {
+        modal.classList.remove('modal-hidden');
+        try {
+            // Meminta akses kamera ke browser
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoFeed.srcObject = stream;
+        } catch (err) {
+            console.error("Error mengakses kamera: ", err);
+            alert("Tidak bisa mengakses kamera. Pastikan Anda memberikan izin di browser.");
+            modal.classList.add('modal-hidden');
+        }
+    });
+
+    // Fungsi untuk mengambil gambar
+    captureBtn.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        // Atur ukuran canvas sesuai ukuran video
+        canvas.width = videoFeed.videoWidth;
+        canvas.height = videoFeed.videoHeight;
+        // Gambar frame dari video ke canvas
+        context.drawImage(videoFeed, 0, 0, canvas.width, canvas.height);
+
+        // Tampilkan pratinjau gambar yang dijepret
+        imagePreview.src = canvas.toDataURL('image/jpeg');
+        imagePreview.classList.remove('image-preview-hidden'); // Tampilkan elemen pratinjau
+
+        // Konversi canvas ke file dan masukkan ke input file
+        canvas.toBlob((blob) => {
+            const file = new File([blob], "camera-shot.jpg", { type: "image/jpeg" });
+            // Gunakan DataTransfer untuk memasukkan file ke input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            imageInput.files = dataTransfer.files;
+        }, 'image/jpeg');
+
+        // Matikan kamera dan tutup modal
+        closeCamera();
+    });
+
+    // Fungsi untuk menutup modal dan mematikan stream kamera
+    function closeCamera() {
+        modal.classList.add('modal-hidden');
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    }
+    closeModalBtn.addEventListener('click', closeCamera);
   </script>
 
 </body>

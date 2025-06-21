@@ -1,7 +1,19 @@
-from django.urls import path
-from . import views
+# nama_app/urls.py
 
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views # Pastikan views diimport seperti ini
+
+# Setup Router untuk membuat semua URL API secara otomatis
+router = DefaultRouter()
+router.register(r'messages', views.MessageViewSet, basename='message')
+
+# Daftar semua "alamat" atau URL di aplikasi Anda
 urlpatterns = [
+    # A. URL UNTUK API (Untuk diakses program/teman Anda)
+    path('api/v1/', include(router.urls)),
+
+    # B. URL UNTUK HALAMAN WEB
     path('', views.landing_page, name='landing'),
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
@@ -10,6 +22,8 @@ urlpatterns = [
     path("new_password/", views.new_password, name="new_password"),
     path("homepage/", views.homepage, name="homepage"),
     path('logout/', views.logout_view, name='logout'),
+
+    # URL Dataset
     path('datasets/', views.all_datasets, name='all_datasets'),
     path('lastview/', views.lastview_dataset, name='lastview_dataset'),
     path('create_dataset/', views.create_dataset, name='create_dataset'),
@@ -24,8 +38,10 @@ urlpatterns = [
     path('search/', views.search_results_view, name='search_results'),
     path('statistik/', views.dataset_statistics_view, name='dataset_stats'),
     path('dataset/<int:dataset_id>/aktivitas/', views.dataset_activity_view, name='dataset_activity'),
-    path('inbox/', views.inbox_view, name='inbox'),
-    path('inbox/<int:message_id>/view/', views.view_message, name='view_message'),
-    path('receive-message/', views.ReceiveMessageView.as_view(), name='api-receive-message'),
+
+    # URL untuk Fungsionalitas Pesan
+    path('inbox/', views.inbox_page, name='inbox'),
+    path('message/<int:message_id>/', views.view_message_page, name='view_message'),
     path('reply/<int:pk>/', views.reply_message_page, name='reply_message'),
+    path('api/dataset-reply/', views.get_latest_reply, name='api-dataset-reply'),
 ]

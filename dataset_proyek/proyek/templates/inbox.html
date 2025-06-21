@@ -107,7 +107,7 @@
     }
 
     .message-card:last-child {
-        margin-bottom: 0; 
+        margin-bottom: 0;
     }
 
     .message-title {
@@ -117,7 +117,7 @@
     }
 
     .buttons .btn {
-      background-color: #0b0b38; 
+      background-color: #0b0b38;
       color: white;
       padding: 8px 16px;
       margin-left: 10px;
@@ -134,7 +134,7 @@
       font-style: italic;
       color: #555;
     }
-    
+
     .site-footer {
       background-color: #0b0b38;
       color: white;
@@ -142,7 +142,7 @@
       padding-top: 25px;
       padding-bottom: 25px;
     }
-    
+
     .footer-content {
       text-align: center;
     }
@@ -181,7 +181,7 @@
       </div>
     </div>
   </header>
-  
+
   <div id="profile-popup" class="popup-container popup-hidden">
       <div class="popup-card">
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
@@ -199,23 +199,46 @@
             <h1>Dataset Requests</h1>
         </div>
 
+        <div class="inbox-actions" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="background-color: #007bff;">
+                    🔄 Ambil Pesan Terbaru
+                </button>
+            </form>
+        </div>
+
+        {% if messages %}
+            <div class="flash-messages" style="list-style: none; padding: 0; margin-bottom: 20px;">
+                {% for message in messages %}
+                    <div class="flash-message" style="padding: 15px; border-radius: 8px; color: #fff; background-color: {% if message.tags == 'success' %} #28a745 {% elif message.tags == 'error' %} #dc3545 {% else %} #17a2b8 {% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="inbox-container">
-            {% if messages %}
-            {% for message in messages %}
-                <div class="message-card">
-                <span class="message-title">{{ message.project_name }}</span>
-                <div class="buttons">
-                    <a href="{% url 'view_message' message.id %}" class="btn">View Details</a>
-                    <a href="{% url 'reply_message' message.id %}" class="btn">Reply</a>
-                </div>
-                </div>
-            {% endfor %}
+            {% if message_list %}
+                {% for message in message_list %}
+                    <div class="message-card">
+                        <div class="message-info">
+                            <div class="message-title">{{ message.project_name }}</div>
+                            <div class="message-meta" style="font-size: 0.85rem; color: #555; margin-top: 4px;">
+                                Dari: <strong>{{ message.sender }}</strong> | Diterima: {{ message.timestamp|date:"d M Y, H:i" }}
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <a href="{% url 'view_message' message.id %}" class="btn">View Details</a>
+                            <a href="{% url 'reply_message' message.id %}" class="btn">Reply</a>
+                        </div>
+                    </div>
+                {% endfor %}
             {% else %}
-            <p class="no-message">Belum ada pesan yang diterima</p>
+                <p class="no-message">Belum ada pesan yang diterima.</p>
             {% endif %}
         </div>
     </div>
-  </main>
+</main>
 
     <footer class="site-footer">
       <div class="container footer-content">
@@ -223,7 +246,7 @@
           <a href="#" class="footer-link">About us</a>
       </div>
   </footer>
-  
+
   <script>
     const popup = document.getElementById('profile-popup');
     const profileIcon = document.querySelector('.profile-icon');
