@@ -50,7 +50,7 @@
     .section-header h1 { font-size: 28px; font-weight: bold; color: #002c3e; margin-bottom: 5px; }
     .section-header p { font-size: 1rem; color: #333; max-width: 600px; }
 
-    
+
     .dataset-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;}
     .dataset-card { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.6); border-radius: 20px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .dataset-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -74,10 +74,10 @@
     .btn:hover {
       opacity: 0.85;
     }
-    .btn-edit { background-color: #319795; } 
-    .btn-view { background-color: #0b0b38; } 
-    .btn-delete { background-color: #c53030; } 
-    
+    .btn-edit { background-color: #319795; }
+    .btn-view { background-color: #0b0b38; }
+    .btn-delete { background-color: #c53030; }
+
     .flash-messages {
       margin-bottom: 1.5rem;
       list-style: none;
@@ -134,14 +134,14 @@
       </div>
     </div>
   </header>
-  
+
   <div id="profile-popup" class="popup-container popup-hidden">
       <div class="popup-card">
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'homepage' %}" class="popup-link"> Homepage</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'homepage' %}" class="popup-link"> Halaman Utama</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluart</a>
       </div>
   </div>
 
@@ -178,8 +178,8 @@
               </div>
               <div class="dataset-card-actions">
                 <a href="{% url 'edit_dataset' dataset.id %}" class="btn btn-edit">Edit</a>
-                <a href="{% url 'view_dataset' dataset.id %}" class="btn btn-view">View</a>
-                <a href="{% url 'delete_dataset' dataset.id %}" class="btn btn-delete">Delete</a>
+                <a href="{% url 'view_dataset' dataset.id %}" class="btn btn-view">Lihat</a>
+                <a href="{% url 'delete_dataset' dataset.id %}" class="btn btn-delete">Hapus</a>
               </div>
             </div>
             {% endfor %}
@@ -194,7 +194,7 @@
   <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 

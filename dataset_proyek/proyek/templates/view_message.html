@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detail Dataset Request - DigiBox</title>
   <style>
-    /* ================================================================== */
-    /* == GAYA FINAL DIAMBIL DARI SISTEM DESAIN KONSISTEN KITA == */
-    /* ================================================================== */
     * {
       margin: 0;
       padding: 0;
@@ -41,7 +38,7 @@
     .logo-icon { height: 90px; margin-right: 10px; }
     .logo-text { font-size: 30px; font-weight: bold; color: white; }
     .header-right { display: flex; align-items: center; }
-    
+
     .profile-icon { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; margin-left: 10px; object-fit: cover; transition: transform 0.2s ease; }
     .profile-icon:hover { transform: scale(1.05); }
 
@@ -53,7 +50,7 @@
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-    
+
     .content-card h1 {
       font-size: 28px;
       color: #002c3e;
@@ -62,7 +59,7 @@
       padding-bottom: 1.5rem;
       border-bottom: 1px solid #dceaea;
     }
-    
+
     /* Gaya baru untuk baris detail yang rapi */
     .detail-item {
       display: flex;
@@ -85,7 +82,7 @@
     .detail-value {
       flex-grow: 1;
     }
-    
+
     .action-area {
         text-align: right;
         margin-top: 2rem;
@@ -121,14 +118,14 @@
       </div>
     </div>
   </header>
-  
+
   <div id="profile-popup" class="popup-container popup-hidden">
       <div class="popup-card">
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
       </div>
   </div>
 
@@ -159,10 +156,10 @@
   <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
-  
+
   <script>
     const popup = document.getElementById('profile-popup');
     const profileIcon = document.querySelector('.profile-icon');

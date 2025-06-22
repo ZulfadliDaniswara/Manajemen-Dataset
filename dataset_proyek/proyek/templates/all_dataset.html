@@ -273,8 +273,8 @@
             <div class="popup-close" onclick="toggleProfilePopup()">x</div>
             <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
             <div class="popup-name">{{ request.user.username }}</div>
-            <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-            <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+            <a href="{% url 'your_dataset' %}" class="popup-link"> Daataset Anda</a>
+            <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
         </div>
     </div>
 
@@ -295,7 +295,7 @@
                     <p class="dataset-card-desc">{{ dataset.description|truncatewords:15 }}</p>
                   </div>
                   <div class="dataset-card-actions">
-                    <a href="{% url 'view_dataset' dataset.id %}" class="view-button">View</a>
+                    <a href="{% url 'view_dataset' dataset.id %}" class="view-button">Lihat</a>
                   </div>
                 </div>
               {% endfor %}
@@ -310,7 +310,7 @@
         <footer class="site-footer">
         <div class="container footer-content">
             <div class="footer-logo">DigiBox</div>
-            <a href="" class="footer-link">About us</a>
+            <a href="" class="footer-link">Tentang Kami</a>
         </div>
     </footer>
 

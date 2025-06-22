@@ -63,29 +63,29 @@
       </div>
     </div>
   </header>
-  
+
   <div id="profile-popup" class="popup-container popup-hidden">
       <div class="popup-card">
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
       </div>
   </div>
 
   <main>
     <div class="container">
       <div class="content-card">
-        
+
         <div class="dataset-header">
           <img src="{{ dataset.image.url }}" alt="{{ dataset.title }}" class="dataset-image">
           <div class="dataset-info">
             <h1>{{ dataset.title }}</h1>
             <p>Dibuat pada {{ dataset.created_at|date:"d F Y" }}</p>
             <div class="action-buttons">
-              <a href="{% url 'download_dataset' dataset.id %}" class="btn btn-primary">⬇ Download</a>
-              <a href="{% url 'print_dataset_pdf' dataset.id %}" class="btn btn-secondary">🖨 Print Details</a>
+              <a href="{% url 'download_dataset' dataset.id %}" class="btn btn-primary"> Download</a>
+              <a href="{% url 'print_dataset_pdf' dataset.id %}" class="btn btn-secondary">Cetak Details</a>
             </div>
           </div>
         </div>
@@ -131,15 +131,15 @@
   <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 
   {{ activity_labels|json_script:"chart-labels-data" }}
   {{ activity_data|json_script:"chart-values-data" }}
-  
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+
   <script>
     // Ambil elemen script dari halaman berdasarkan ID yang BENAR
     const labelsElement = document.getElementById('chart-labels-data');
@@ -172,19 +172,19 @@
                 }]
             },
             options: {
-                scales: { 
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { 
-                            precision: 0 
-                        } 
-                    } 
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
                 },
-                plugins: { 
-                    title: { 
-                        display: true, 
-                        text: 'Aktivitas Download Harian' 
-                    } 
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Aktivitas Download Harian'
+                    }
                 }
             }
         });

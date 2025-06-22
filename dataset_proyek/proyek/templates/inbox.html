@@ -187,8 +187,8 @@
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
       </div>
   </div>
 
@@ -211,7 +211,7 @@
         {% if messages %}
             <div class="flash-messages" style="list-style: none; padding: 0; margin-bottom: 20px;">
                 {% for message in messages %}
-                    <div class="flash-message" style="padding: 15px; border-radius: 8px; color: #fff; background-color: {% if message.tags == 'success' %} #28a745 {% elif message.tags == 'error' %} #dc3545 {% else %} #17a2b8 {% endif %};">
+                    <div class="flash-message" style="padding: 15px; border-radius: 8px; color: #fff; background-color: {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' %}#dc3545{% else %}#17a2b8{% endif %};">
                         {{ message }}
                     </div>
                 {% endfor %}
@@ -228,8 +228,8 @@
                             </div>
                         </div>
                         <div class="buttons">
-                            <a href="{% url 'view_message' message.id %}" class="btn">View Details</a>
-                            <a href="{% url 'reply_message' message.id %}" class="btn">Reply</a>
+                            <a href="{% url 'view_message' message.id %}" class="btn">Lihat Detail</a>
+                            <a href="{% url 'reply_message' message.id %}" class="btn">Jawab</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -243,7 +243,7 @@
     <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 

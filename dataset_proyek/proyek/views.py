@@ -157,7 +157,7 @@ def create_dataset3(request):
 
         num_rows = 0
         num_features = 0
-        keywords = "" # Default value jika file tidak ada atau bukan CSV
+        keywords = ""
 
         if dataset_file:
             # Validasi sederhana, pastikan file adalah .csv
@@ -183,7 +183,6 @@ def create_dataset3(request):
         else:
             messages.error(request, 'Anda belum mengunggah file dataset.')
             return render(request, 'create_dataset3.html')
-        # --- AKHIR DARI LOGIKA BARU ---
 
         # Ambil semua data dari session
         title = request.session.get('name')
@@ -450,7 +449,6 @@ def inbox_page(request):
                 raise TypeError("Format data dari API teman bukan list.")
 
             for message_data in messages_from_friend:
-                # === PERUBAHAN UTAMA DIMULAI DI SINI ===
 
                 # 1. Ambil sub-objek 'project_detail'. Beri {} sebagai nilai default jika tidak ada.
                 project_detail = message_data.get('project_detail', {})
@@ -523,7 +521,6 @@ class MessageViewSet(viewsets.ModelViewSet):
 def reply_message_page(request, pk):
     message_to_reply = get_object_or_404(ExternalMessage, pk=pk)
 
-    # --- Logika POST yang sudah lengkap ---
     if request.method == 'POST':
         # 1. Ambil SEMUA data dari form
         message_text = request.POST.get('message_text')
@@ -546,7 +543,6 @@ def reply_message_page(request, pk):
 
         return redirect('inbox')
 
-    # --- Logika GET yang sudah lengkap ---
     try:
         # Ambil seluruh objek balasan, bukan hanya teksnya
         existing_reply_obj = message_to_reply.reply
@@ -562,25 +558,6 @@ def reply_message_page(request, pk):
     }
     return render(request, 'reply_message.html', context)
 
-@api_view(['GET'])
-def get_latest_reply(request):
-    try:
-        latest_reply = ReplyMessage.objects.order_by('-created_at').first()
-
-        if latest_reply:
-            serializer = ReplyMessageSerializer(latest_reply)
-            return Response(serializer.data)
-        else:
-            return Response(
-                {"detail": "Belum ada balasan apapun di sistem."},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-    except Exception as e:
-        return Response(
-            {"error": "Terjadi kesalahan di server.", "details": str(e)},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
 @api_view(['GET'])
 def get_latest_reply(request):
     try:

@@ -87,15 +87,15 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>Masuk</h2>
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" class="login-input" required>
             <input type="password" name="password" placeholder="Password" class="login-input" required>
-            <a href="{% url 'forgot_password' %}" class="login-forgot">Forgot Password?</a>
-            <button type="submit">Login</button>
+            <a href="{% url 'forgot_password' %}" class="login-forgot">Lupa Password?</a>
+            <button type="submit">Masuk</button>
         </form>
-        <a href="{% url 'signup' %}" class="login-create">Create account</a>
+        <a href="{% url 'signup' %}" class="login-create">Buat Akun</a>
     </div>
 </body>
 </html>

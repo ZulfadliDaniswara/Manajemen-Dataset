@@ -88,10 +88,10 @@
 <body class="signup-page">
 
   <div class="signup-container">
-    <h2>Sign Up</h2>
+    <h2>Daftar Akun</h2>
     <form method="post" action="{% url 'signup' %}">
     {% csrf_token %}
-  
+
     <input type="text" name="username" placeholder="Username" required />
 
   <!-- HARUS password1 -->
@@ -100,7 +100,7 @@
   <!-- HARUS password2 -->
     <input type="password" name="password2" placeholder="Confirm Password" required />
 
-    <button type="submit">Sign Up</button>
+    <button type="submit">Daftar</button>
 </form>
 
   </div>

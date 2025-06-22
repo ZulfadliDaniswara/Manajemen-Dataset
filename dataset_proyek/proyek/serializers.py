@@ -17,5 +17,4 @@ class ReplyMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReplyMessage
-        # === TAMBAHKAN 'dataset_link' DI SINI ===
         fields = ['project_name', 'message_text', 'dataset_link', 'created_at']

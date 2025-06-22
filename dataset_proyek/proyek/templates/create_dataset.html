@@ -160,8 +160,8 @@
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
       </div>
   </div>
 
@@ -193,7 +193,7 @@
           
           <div class="form-group">
             <label for="format">4. Format Dataset</label>
-            <input type="text" id="format" name="format" placeholder="Contoh: CSV, Excel, JSON" required>
+            <input type="text" id="format" name="format" placeholder="CSV" required>
           </div>
           
           <div class="button-group">
@@ -208,7 +208,7 @@
   <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 

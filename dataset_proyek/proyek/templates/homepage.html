@@ -26,8 +26,8 @@
     }
 
     .container {
-    width: 96%; 
-    max-width: 1920px; 
+    width: 96%;
+    max-width: 1920px;
     margin-left: auto;
     margin-right: auto;
     }
@@ -63,7 +63,7 @@
       display: flex;
       align-items: center;
     }
-    
+
     .search-form {
       display: flex;
       align-items: center;
@@ -199,7 +199,7 @@
       padding-top: 25px;
       padding-bottom: 25px;
     }
-    
+
     .footer-content {
         text-align: center;
     }
@@ -244,11 +244,11 @@
               <img src="{% static 'images/search.png' %}" alt="Search" class="search-icon" />
             </button>
           </form>
-    
+
           <a href="{% url 'inbox' %}" title="Pesan Masuk">
             <img src="{% static 'images/massage.png' %}" alt="Pesan" class="message-icon" />
           </a>
-    
+
           <img src="{% static 'images/profile.png' %}" alt="User" class="profile-icon" onclick="toggleProfilePopup()" />
         </div>
       </div>
@@ -259,8 +259,8 @@
       <div class="popup-close" onclick="toggleProfilePopup()">x</div>
       <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
       <div class="popup-name">{{ request.user.username }}</div>
-      <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-      <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+      <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+      <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
     </div>
   </div>
 
@@ -270,14 +270,14 @@
         <h1>Jelajahi Dunia Data, Tanpa Batas</h1>
         <p>Temukan dan akses beragam dataset berkualitas tinggi untuk mendukung riset, analisis, dan pengembangan teknologi.</p>
         <div class="cta-button-wrapper">
-          <button class="cta-button" onclick="window.location.href='/create_dataset/'">Create Dataset</button>
+          <button class="cta-button" onclick="window.location.href='/create_dataset/'">Buat Dataset</button>
         </div>
       </section>
-  
+
       <section class="dataset-section">
         <div class="section-header">
-          <h2>All Dataset</h2>
-          <a href="{% url 'all_datasets' %}">View all →</a>
+          <h2>Semua Dataset</h2>
+          <a href="{% url 'all_datasets' %}">Lihat semua →</a>
         </div>
         <div class="dataset-grid">
           <img src="{% static 'images/rashford.jpg' %}" alt="dataset">
@@ -286,11 +286,11 @@
           <img src="{% static 'images/valverde.jpg' %}" alt="dataset">
         </div>
       </section>
-  
+
       <section class="dataset-section">
         <div class="section-header">
-          <h2>Last View</h2>
-          <a href="{% url 'lastview_dataset' %}">View all →</a>
+          <h2>Terakhir Dilihat</h2>
+          <a href="{% url 'lastview_dataset' %}">Lihat Semua →</a>
         </div>
         <div class="dataset-grid">
           <img src="{% static 'images/ferrari.jpg' %}" alt="dataset">
@@ -305,7 +305,7 @@
   <footer class="site-footer">
       <div class="container footer-content">
         <div class="footer-logo">DigiBox</div>
-        <a href="#" class="footer-link">About us</a>
+        <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 

@@ -92,7 +92,7 @@
       border-color: #80c3c7;
       box-shadow: 0 0 0 3px rgba(128, 195, 199, 0.5);
     }
-    
+
     .form-group textarea {
       resize: vertical;
       min-height: 120px;
@@ -106,7 +106,7 @@
       padding-top: 1.5rem;
       border-top: 1px solid #dceaea;
     }
-    
+
     .btn {
       padding: 10px 25px;
       border: none;
@@ -150,14 +150,14 @@
       </div>
     </div>
   </header>
-  
+
   <div id="profile-popup" class="popup-container popup-hidden">
       <div class="popup-card">
           <div class="popup-close" onclick="toggleProfilePopup()">x</div>
           <img src="{% static 'images/profile.png' %}" alt="Avatar" class="popup-avatar">
           <div class="popup-name">{{ request.user.username }}</div>
-          <a href="{% url 'your_dataset' %}" class="popup-link"> Your Dataset</a>
-          <a href="{% url 'logout' %}" class="popup-link"> Logout</a>
+          <a href="{% url 'your_dataset' %}" class="popup-link"> Dataset Anda</a>
+          <a href="{% url 'logout' %}" class="popup-link"> Keluar</a>
       </div>
   </div>
 
@@ -167,7 +167,7 @@
         <h1>Edit Dataset</h1>
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          
+
           <div class="form-group">
             <label for="title">Judul</label>
             <input type="text" name="title" id="title" value="{{ dataset.title }}" required>
@@ -202,7 +202,7 @@
             <label for="image">Ganti Gambar (opsional)</label>
             <input type="file" name="image" id="image">
           </div>
-          
+
           <div class="button-group">
             <a href="{% url 'your_dataset' %}" class="btn btn-cancel">Batal</a>
             <button type="submit" class="btn btn-save">Simpan Perubahan</button>
@@ -215,7 +215,7 @@
   <footer class="site-footer">
       <div class="container footer-content">
           <div class="footer-logo">DigiBox</div>
-          <a href="#" class="footer-link">About us</a>
+          <a href="#" class="footer-link">Tentang Kami</a>
       </div>
   </footer>
 
